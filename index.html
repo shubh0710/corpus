@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corpus</title>
+</head>
+
+<body>
+    <header>
+        <h1>corpus.</h1>
+        <nav>
+            <a href="#how-it-works">How it works</a>
+            <a href="#glossary">Glossary</a>
+        </nav>
+        <button type="button">Save this mix</button>
+    </header>
+
+    <main>
+        <section>
+            <form>
+                <fieldset>
+                    <legend>Build your mix</legend>
+                    <p>Assign a share to each fund. They have to add up to 100%.</p>
+
+                    <div role="img"
+                        aria-label="Allocation ribbon: 75% equity, 15% debt, 10% gold, split across six funds.">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div>
+                        <p>Equity 75%</p>
+                        <p>Debt 15%</p>
+                        <p>Gold 10%</p>
+                    </div>
+
+                    <label for="instrument-1">Nippon India Small Cap <small>Small cap equity</small></label>
+                    <input type="number" id="instrument-1" name="instrument-1" min="0" max="100" step="1" value="0">
+
+                    <label for="instrument-2">HDFC Mid Cap <small>Mid cap equity</small></label>
+                    <input type="number" id="instrument-2" name="instrument-2" min="0" max="100" step="1" value="0">
+
+                    <label for="instrument-3">Nippon India Large Cap <small>Large cap equity</small></label>
+                    <input type="number" id="instrument-3" name="instrument-3" min="0" max="100" step="1" value="0">
+
+                    <label for="instrument-4">DSP Natural Resources <small>Thematic equity</small></label>
+                    <input type="number" id="instrument-4" name="instrument-4" min="0" max="100" step="1" value="0">
+
+                    <label for="instrument-5">DSP Gilt <small>Government debt</small></label>
+                    <input type="number" id="instrument-5" name="instrument-5" min="0" max="100" step="1" value="0">
+
+                    <label for="instrument-6">Gold BeES <small>Commodity</small></label>
+                    <input type="number" id="instrument-6" name="instrument-6" min="0" max="100" step="1" value="0">
+
+                    <div>
+                        <p>Total allocated</p>
+                        <p>100% — ready</p>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>How you'd invest</legend>
+                    <p>Choose the pattern to replay through history.</p>
+
+                    <fieldset>
+                        <legend>Investment style</legend>
+                        <input type="radio" id="style-sip" name="investment_style" value="sip" checked>
+                        <label for="style-sip">Monthly SIP</label>
+
+                        <input type="radio" id="style-lumpsum" name="investment_style" value="lumpsum">
+                        <label for="style-lumpsum">Lump sum</label>
+                    </fieldset>
+
+                    <label for="amount_each_month">Amount each month</label>
+                    <input type="number" id="amount_each_month" name="amount_each_month">
+
+                    <label for="rebalancing">Rebalancing</label>
+                    <select id="rebalancing" name="rebalancing">
+                        <option value="let_it_drift">Let it drift</option>
+                        <option value="rebalance_yearly">Rebalance yearly</option>
+                    </select>
+
+                    <label for="from">From</label>
+                    <input type="date" id="from" name="from">
+
+                    <label for="to">To</label>
+                    <input type="date" id="to" name="to">
+                </fieldset>
+
+                <button type="submit">Run the numbers</button>
+                <p>History starts 11 Sep 2019 — that's as far back as the benchmark fund goes.</p>
+            </form>
+        </section>
+
+        <section>
+            <div>
+                <p>Your mix vs benchmark</p>
+                <h2>₹5,000 a month, 83 months</h2>
+                <p>Sep 2019 — Aug 2026</p>
+            </div>
+
+            <div>
+                <div>
+                    <p>+2.2%</p>
+                    <p>higher annual return</p>
+                </div>
+
+                <div>
+                    <p>14%</p>
+                    <p>less bumpy</p>
+                </div>
+
+                <div>
+                    <p>36%</p>
+                    <p>smaller worst fall</p>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <p>Your mix</p>
+                    <p>Nifty 500 index fund</p>
+                </div>
+                <svg viewBox="0 0 720 260" width="100%" height="240" role="img"
+                    aria-label="Growth of the mix against the benchmark from 2019 to 2026. Both fall sharply in early 2020 then recover, with the mix falling less and ending higher.">
+                    <line x1="40" y1="20" x2="710" y2="20" stroke="#EDEEF0"></line>
+                    <line x1="40" y1="76" x2="710" y2="76" stroke="#EDEEF0"></line>
+                    <line x1="40" y1="132" x2="710" y2="132" stroke="#EDEEF0"></line>
+                    <line x1="40" y1="188" x2="710" y2="188" stroke="#EDEEF0"></line>
+                    <line x1="40" y1="228" x2="710" y2="228" stroke="#DDDFE3"></line>
+                    <text x="34" y="24" text-anchor="end" font-size="11" fill="#98A0AE"
+                        font-family="IBM Plex Mono">₹90L</text>
+                    <text x="34" y="80" text-anchor="end" font-size="11" fill="#98A0AE"
+                        font-family="IBM Plex Mono">₹70L</text>
+                    <text x="34" y="136" text-anchor="end" font-size="11" fill="#98A0AE"
+                        font-family="IBM Plex Mono">₹50L</text>
+                    <text x="34" y="192" text-anchor="end" font-size="11" fill="#98A0AE"
+                        font-family="IBM Plex Mono">₹30L</text>
+
+                    <path
+                        d="M40 224 L90 218 L118 236 L150 212 L200 196 L250 178 L300 168 L350 148 L400 140 L450 118 L500 108 L550 84 L600 74 L650 52 L710 34"
+                        fill="none" stroke="#A67C2E" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+                    </path>
+                    <path
+                        d="M40 226 L90 221 L118 248 L150 224 L200 210 L250 196 L300 190 L350 172 L400 168 L450 150 L500 144 L550 122 L600 116 L650 96 L710 78"
+                        fill="none" stroke="#7C8798" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"
+                        stroke-linecap="round"></path>
+
+                    <line x1="118" y1="20" x2="118" y2="252" stroke="#A63D2E" stroke-width="1" stroke-dasharray="3 3"
+                        opacity=".55"></line>
+                    <text x="124" y="34" font-size="11" fill="#A63D2E" font-family="IBM Plex Sans">Mar 2020</text>
+
+                    <text x="40" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2019</text>
+                    <text x="250" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2021</text>
+                    <text x="450" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2023</text>
+                    <text x="650" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2026</text>
+                </svg>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Measure</th>
+                        <th>Your mix</th>
+                        <th>Benchmark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Return a year</p>
+                            <p>XIRR, since you invest monthly</p>
+                        </td>
+                        <td>18.4%</td>
+                        <td>16.2%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Bumpiness</p>
+                            <p>How much it swings, per year</p>
+                        </td>
+                        <td>13.8%</td>
+                        <td>16.1%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Worst fall</p>
+                            <p>Peak to trough, at its lowest</p>
+                        </td>
+                        <td>−24.6%</td>
+                        <td>−38.3%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Sensitivity</p>
+                            <p>Beta — 1.0 moves with the market</p>
+                        </td>
+                        <td>0.82</td>
+                        <td>1.00</td>
+                    </tr>
+                    <tr>
+                        <td>You put in</td>
+                        <td>₹4,15,000</td>
+                        <td>₹4,15,000</td>
+                    </tr>
+                    <tr>
+                        <td>You'd have</td>
+                        <td>₹8,02,400</td>
+                        <td>₹7,38,100</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Simulated on published NAVs. Past performance doesn't predict future returns.</p>
+        </section>
+
+        <section>
+            <h2>Each fund on its own</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fund</th>
+                        <th>Share</th>
+                        <th>Shape</th>
+                        <th>Return</th>
+                        <th>Bumpiness</th>
+                        <th>Worst fall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nippon India Small Cap</td>
+                        <td>25%</td>
+                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
+                                aria-label="Jagged climb with a sharp early dip">
+                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
+                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
+                            </svg></td>
+                        <td>26.4%</td>
+                        <td>19.8%</td>
+                        <td>−34.2%</td>
+                    </tr>
+                    <tr>
+                        <td>HDFC Mid Cap</td>
+                        <td>15%</td>
+                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
+                                aria-label="Jagged climb with a sharp early dip">
+                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
+                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
+                            </svg></td>
+                        <td>22.1%</td>
+                        <td>17.6%</td>
+                        <td>−31.8%</td>
+                    </tr>
+                    <tr>
+                        <td>Nippon India Large Cap</td>
+                        <td>25%</td>
+                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
+                                aria-label="Jagged climb with a sharp early dip">
+                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
+                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
+                            </svg></td>
+                        <td>17.3%</td>
+                        <td>16.2%</td>
+                        <td>−38.9%</td>
+                    </tr>
+                    <tr>
+                        <td>DSP Natural Resources</td>
+                        <td>10%</td>
+                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
+                                aria-label="Jagged climb with a sharp early dip">
+                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
+                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
+                            </svg></td>
+                        <td>19.8%</td>
+                        <td>22.4%</td>
+                        <td>−41.3%</td>
+                    </tr>
+                    <tr>
+                        <td>DSP Gilt</td>
+                        <td>15%</td>
+                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
+                                aria-label="Jagged climb with a sharp early dip">
+                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
+                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
+                            </svg></td>
+                        <td>7.1%</td>
+                        <td>3.6%</td>
+                        <td>−5.2%</td>
+                    </tr>
+                    <tr>
+                        <td>Gold BeES</td>
+                        <td>10%</td>
+                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
+                                aria-label="Jagged climb with a sharp early dip">
+                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
+                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
+                            </svg></td>
+                        <td>14.9%</td>
+                        <td>13.1%</td>
+                        <td>−18.7%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>For educational and informational purposes only. Not investment advice.</p>
+        <nav>
+            <a href="https://github.com/shubh0710">Github</a>
+            <a href="https://in.linkedin.com/">LinkedIn</a>
+        </nav>
+    </footer>
+</body>
+
+</html>
