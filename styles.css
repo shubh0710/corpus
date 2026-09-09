@@ -1,0 +1,871 @@
+/* ==========================================================
+   CORPUS — stylesheet
+
+   1.  Reset
+   2.  Design tokens
+   3.  Base
+   4.  Header
+   5.  Page layout
+   6.  Shared card + form controls
+   7.  Card 1 — Build your mix
+   8.  Card 2 — How you'd invest
+   9.  Card 3 — Your mix vs benchmark
+   10. Tables (cards 3 and 4)
+   11. Footer
+   12. Responsive
+   ========================================================== */
+
+
+/* ==========================================================
+   1. RESET
+   ========================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+button,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+svg {
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+fieldset {
+    border: none;
+}
+
+
+/* ==========================================================
+   2. DESIGN TOKENS
+
+   Spacing is a strict 4px scale and nothing outside it is
+   ever used. That single rule is what keeps the gaps looking
+   even across the whole page without measuring anything.
+   ========================================================== */
+:root {
+    /* surfaces */
+    --color-bg: #F6F5F2;
+    --color-surface: #FFFFFF;
+    --color-sunken: #F1EFEB;
+
+    /* text — three steps, darkest to lightest */
+    --color-text-primary: #191A1C;
+    --color-text-secondary: #5D6169;
+    --color-text-muted: #676B73;
+
+    /* borders — the faint one separates rows inside a card,
+       the strong one outlines things you click or type into */
+    --color-border: #E4E2DD;
+    --color-border-strong: #949089;
+
+    /* accents */
+    --color-brass: #9A6F24;
+    --color-accent-tint: #FAF1E2;
+    --color-accent-strong: #6A4610;
+    --color-accent-muted: #8A6220;
+    --color-benchmark: #6C7684;
+    --color-negative: #A8412F;
+    --color-chart-grid: #E0DDD7;
+
+    /* one colour per fund, used by the ribbon and the dots */
+    --fund-smallcap: #7A4E96;
+    --fund-midcap: #43699F;
+    --fund-largecap: #2C7561;
+    --fund-thematic: #A96636;
+    --fund-gilt: #5C6472;
+    --fund-gold: #9A6F24;
+
+    /* type */
+    --font-ui: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-numeric: 'IBM Plex Mono', ui-monospace, monospace;
+    --font-display: 'Bricolage Grotesque', var(--font-ui);
+
+    /* spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 48px;
+
+    /* corners */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 14px;
+
+    /* page */
+    --page-max: 1180px;
+    --page-pad: var(--space-7);
+
+    /* a shadow small enough to read as "this sits on top of
+       the thing behind it", not as decoration */
+    --shadow-lift: 0 1px 2px rgba(25, 26, 28, 0.07);
+}
+
+
+/* ==========================================================
+   3. BASE
+   ========================================================== */
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+/* Every number on the page wears this. tabular-nums forces
+   each digit to the same width, so figures stacked in a
+   column line up on the decimal point. */
+.num {
+    font-family: var(--font-numeric);
+    font-variant-numeric: tabular-nums;
+}
+
+input.num {
+    text-align: right;
+}
+
+/* One focus ring for the whole page. :focus-visible shows it
+   for keyboard users but not on mouse clicks. :where() drops
+   the specificity to zero, so anything you write later wins
+   over it without a fight. */
+:where(a, button, input, select):focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+
+/* ==========================================================
+   4. HEADER
+   ========================================================== */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    /* 88% white plus a blur of whatever scrolls underneath:
+       frosted glass. Without the blur, see-through just
+       looks like a smudge. */
+    background-color: rgba(255, 255, 255, 0.88);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-3) var(--page-pad);
+    min-height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.wordmark {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+.wordmark span {
+    color: var(--color-brass);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+header nav {
+    display: flex;
+    gap: var(--space-5);
+}
+
+header nav a {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    transition: color 0.15s;
+}
+
+header nav a:hover {
+    color: var(--color-text-primary);
+}
+
+.btn-ghost {
+    padding: 7px var(--space-4);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    white-space: nowrap;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.btn-ghost:hover {
+    border-color: var(--color-text-secondary);
+    box-shadow: var(--shadow-lift);
+}
+
+
+/* ==========================================================
+   5. PAGE LAYOUT
+
+   400 + 32 gap + roughly 390 + padding lands just under 880,
+   which is why the two columns give up at 900.
+   ========================================================== */
+main {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-7) var(--page-pad) var(--space-8);
+
+    display: grid;
+    grid-template-columns: 400px minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+}
+
+/* Both columns stack their cards with one even gap. min-width
+   keeps a wide table from stretching the column open. */
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    min-width: 0;
+}
+
+
+/* ==========================================================
+   6. SHARED — cards, headings, form controls
+   ========================================================== */
+.panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+}
+
+.panel-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.panel-subtitle {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: var(--space-1) 0 var(--space-5);
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.field-label {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 5px;
+}
+
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: 14px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:hover,
+select:hover {
+    border-color: var(--color-text-muted);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-brass);
+    box-shadow: 0 0 0 3px rgba(154, 111, 36, 0.12);
+}
+
+.note {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-top: var(--space-3);
+    line-height: 1.5;
+}
+
+
+/* ==========================================================
+   7. CARD 1 — BUILD YOUR MIX
+   ========================================================== */
+.ribbon {
+    display: flex;
+    height: 38px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.c-smallcap {
+    background-color: var(--fund-smallcap);
+}
+
+.c-midcap {
+    background-color: var(--fund-midcap);
+}
+
+.c-largecap {
+    background-color: var(--fund-largecap);
+}
+
+.c-thematic {
+    background-color: var(--fund-thematic);
+}
+
+.c-gilt {
+    background-color: var(--fund-gilt);
+}
+
+.c-gold {
+    background-color: var(--fund-gold);
+}
+
+.ribbon-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin: var(--space-2) 0 var(--space-5);
+}
+
+.ribbon-legend strong {
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+/* dot · name · share input.
+   minmax(0, 1fr) instead of plain 1fr: a 1fr track refuses to
+   shrink below its content, so a long fund name would shove
+   the input out of the card. */
+.wrow {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) 72px;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.wrow:last-of-type {
+    border-bottom: none;
+}
+
+.swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+}
+
+.wrow label {
+    font-size: 13px;
+    line-height: 1.35;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.wrow input {
+    padding: 6px 10px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-text-primary);
+    font-size: 13px;
+}
+
+.total-value {
+    font-family: var(--font-numeric);
+    font-weight: 500;
+    color: var(--color-accent-strong);
+}
+
+
+/* ==========================================================
+   8. CARD 2 — HOW YOU'D INVEST
+
+   Segmented control: one recessed track with the chosen
+   option raised inside it. The radios stay real inputs so
+   arrow keys still move between them — they are just made
+   invisible and laid over their own label.
+   ========================================================== */
+.style-field {
+    margin-bottom: var(--space-4);
+}
+
+.seg {
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    background-color: var(--color-sunken);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.radio-wrap {
+    position: relative;
+    flex: 1;
+}
+
+.radio-wrap input[type="radio"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.radio-wrap label {
+    display: block;
+    text-align: center;
+    padding: 7px var(--space-2);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s, box-shadow 0.18s;
+}
+
+.radio-wrap input[type="radio"]:checked+label {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    font-weight: 500;
+    box-shadow: var(--shadow-lift);
+}
+
+/* the radio itself is invisible, so the ring goes on its label */
+.radio-wrap input[type="radio"]:focus-visible+label {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 1px;
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.field {
+    min-width: 0;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-text-primary);
+    color: var(--color-surface);
+    transition: opacity 0.15s;
+}
+
+.btn-primary:hover {
+    opacity: 0.87;
+}
+
+
+/* ==========================================================
+   9. CARD 3 — YOUR MIX VS BENCHMARK
+   ========================================================== */
+.result-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+
+.result-headline {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-top: 3px;
+}
+
+.result-window {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* auto-fit means the browser fits as many 148px columns as
+   there is room for — three, then two, then one — so this
+   needs no media query of its own. */
+.verdicts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.verdict {
+    background-color: var(--color-accent-tint);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+}
+
+.verdict-value {
+    font-family: var(--font-numeric);
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-accent-strong);
+}
+
+.verdict-label {
+    font-size: 12px;
+    color: var(--color-accent-muted);
+    margin-top: 2px;
+}
+
+.chart-wrap {
+    background-color: var(--color-sunken);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-4) var(--space-2);
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
+}
+
+.legend-mark {
+    display: inline-block;
+    width: 15px;
+    height: 2.5px;
+    vertical-align: middle;
+    margin-right: 7px;
+    border-radius: 2px;
+}
+
+.mark-mix {
+    background-color: var(--color-brass);
+}
+
+.mark-bm {
+    background-color: var(--color-benchmark);
+}
+
+/* --- the chart's own parts --- */
+.chart-grid {
+    stroke: var(--color-chart-grid);
+}
+
+.chart-baseline {
+    stroke: var(--color-border-strong);
+}
+
+.chart-label {
+    font-family: var(--font-numeric);
+    font-size: 11px;
+    fill: var(--color-text-muted);
+}
+
+.chart-marker {
+    stroke: var(--color-negative);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    opacity: 0.45;
+}
+
+.chart-marker-label {
+    font-family: var(--font-numeric);
+    font-size: 11px;
+    fill: var(--color-negative);
+}
+
+.chart-line-mix,
+.chart-line-bm {
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.chart-line-mix {
+    stroke: var(--color-brass);
+    stroke-width: 2.2;
+}
+
+/* dashed and thinner: the benchmark is the thing being
+   compared against, not the subject */
+.chart-line-bm {
+    stroke: var(--color-benchmark);
+    stroke-width: 1.8;
+    stroke-dasharray: 5 4;
+}
+
+
+/* ==========================================================
+   10. TABLES — shared by cards 3 and 4
+
+   Numbers never wrap. Only the first column may.
+   ========================================================== */
+.table-scroll {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--space-5);
+    font-size: 13px;
+}
+
+th,
+td {
+    padding: 10px var(--space-2);
+    text-align: right;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+}
+
+/* zero padding on the outer edges so the table lines up
+   flush with the card's own padding */
+th:first-child,
+td:first-child {
+    text-align: left;
+    white-space: normal;
+    padding-left: 0;
+}
+
+th:last-child,
+td:last-child {
+    padding-right: 0;
+}
+
+thead th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border-strong);
+    padding-bottom: var(--space-2);
+}
+
+/* the card's padding already ends the table — a line here
+   would read as a row that isn't there */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.mix {
+    color: var(--color-accent-strong);
+    font-weight: 500;
+}
+
+.bm {
+    color: var(--color-benchmark);
+}
+
+.neg {
+    color: var(--color-negative);
+}
+
+/* the small print under a row label, in both the fund list
+   and the comparison table */
+.wrow label small,
+.stacked-label small {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    margin-top: 1px;
+}
+
+.spark-cell {
+    width: 86px;
+    text-align: center;
+}
+
+.spark-cell svg {
+    margin: 0 auto;
+}
+
+.spark-line {
+    fill: none;
+    stroke: var(--color-brass);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+}
+
+
+/* ==========================================================
+   11. FOOTER
+   ========================================================== */
+footer {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-5) var(--page-pad) var(--space-8);
+    border-top: 1px solid var(--color-border);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+footer nav {
+    display: flex;
+    gap: var(--space-5);
+}
+
+footer nav a {
+    transition: color 0.15s;
+}
+
+footer nav a:hover {
+    color: var(--color-text-primary);
+}
+
+
+/* ==========================================================
+   12. RESPONSIVE
+
+   Grouped by screen width, widest first. Each block changes
+   --page-pad where needed, and every rule that uses
+   var(--page-pad) follows automatically — header, main and
+   footer stay in one vertical line at every size.
+   ========================================================== */
+
+/* --- 900px — the two columns stop fitting --- */
+@media (max-width: 900px) {
+    :root {
+        --page-pad: var(--space-5);
+    }
+
+    main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-5);
+        padding-top: var(--space-5);
+        padding-bottom: var(--space-7);
+    }
+}
+
+/* --- 640px — trim the header
+   The header is sticky, so its height is taken out of the
+   reading area for good. Worth keeping lean on a phone.
+
+   The padding + negative margin on the nav links grows the
+   touchable area to about 44px for a fingertip, then pulls
+   the layout back in by the same amount, so the row itself
+   does not get any taller. --- */
+@media (max-width: 640px) {
+    .header-inner {
+        padding-top: var(--space-2);
+        padding-bottom: var(--space-2);
+        min-height: 56px;
+        gap: var(--space-3);
+    }
+
+    .header-right {
+        gap: var(--space-3);
+    }
+
+    header nav a {
+        padding: 11px 0;
+        margin: -11px 0;
+    }
+
+    .btn-ghost {
+        padding: 11px var(--space-3);
+    }
+}
+
+/* --- 430px — the header wraps to two rows
+   Below this the wordmark, both links and the button cannot
+   share one row. Rather than hide anything, it wraps — and
+   because two rows would eat a chunk of a small screen, the
+   header also stops being sticky. Height costs nothing once
+   it scrolls away. --- */
+@media (max-width: 430px) {
+    :root {
+        --page-pad: var(--space-4);
+    }
+
+    header {
+        position: static;
+    }
+
+    .header-inner {
+        flex-wrap: wrap;
+    }
+
+    .wordmark {
+        font-size: 18px;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .panel {
+        padding: var(--space-5);
+    }
+}
+
+/* --- 400px — two fields side by side get too cramped --- */
+@media (max-width: 400px) {
+    .field-row {
+        grid-template-columns: 1fr;
+    }
+}

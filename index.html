@@ -5,318 +5,424 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corpus</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+
+    <!-- ==========================================================
+         HEADER
+         <header> stays full width so its background and bottom
+         border reach the screen edges. .header-inner holds the
+         content and is capped to the page width, so the wordmark
+         lines up with the cards below on a wide monitor.
+         ========================================================== -->
     <header>
-        <h1>corpus.</h1>
-        <nav>
-            <a href="#how-it-works">How it works</a>
-            <a href="#glossary">Glossary</a>
-        </nav>
-        <button type="button">Save this mix</button>
+        <div class="header-inner">
+            <h1 class="wordmark">corpus<span>.</span></h1>
+
+            <div class="header-right">
+                <nav>
+                    <a href="#how-it-works">How it works</a>
+                    <a href="#glossary">Glossary</a>
+                </nav>
+                <button type="button" class="btn-ghost">Save this mix</button>
+            </div>
+        </div>
     </header>
 
+
+    <!-- ==========================================================
+         MAIN — two columns
+         Left column is the form (cards 1 and 2).
+         Right column is the results (cards 3 and 4).
+         ========================================================== -->
     <main>
-        <section>
-            <form>
+
+        <!-- ─── LEFT COLUMN ─────────────────────────────────── -->
+        <form class="col">
+
+            <!-- ===== CARD 1 · Build your mix ===== -->
+            <!-- The border lives on <section class="panel">, not on
+                 the <fieldset>. A <legend> sits ON its fieldset's
+                 border and would cut a notch through the card's top
+                 edge, so the fieldset inside stays borderless. -->
+            <section class="panel">
                 <fieldset>
-                    <legend>Build your mix</legend>
-                    <p>Assign a share to each fund. They have to add up to 100%.</p>
+                    <legend class="panel-title">Build your mix</legend>
+                    <p class="panel-subtitle">Assign a share to each fund. They have to add up to 100%.</p>
 
-                    <div role="img"
-                        aria-label="Allocation ribbon: 75% equity, 15% debt, 10% gold, split across six funds.">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div>
-                        <p>Equity 75%</p>
-                        <p>Debt 15%</p>
-                        <p>Gold 10%</p>
+                    <!-- Allocation ribbon. Widths sit inline because
+                         they are data, not styling — each one is that
+                         fund's share of the mix. -->
+                    <div class="ribbon" role="img"
+                        aria-label="Allocation: 75% equity, 15% debt, 10% gold, split across six funds.">
+                        <span class="c-smallcap" style="width: 25%"></span>
+                        <span class="c-midcap" style="width: 15%"></span>
+                        <span class="c-largecap" style="width: 25%"></span>
+                        <span class="c-thematic" style="width: 10%"></span>
+                        <span class="c-gilt" style="width: 15%"></span>
+                        <span class="c-gold" style="width: 10%"></span>
                     </div>
 
-                    <label for="instrument-1">Nippon India Small Cap <small>Small cap equity</small></label>
-                    <input type="number" id="instrument-1" name="instrument-1" min="0" max="100" step="1" value="0">
+                    <p class="ribbon-legend">
+                        <span>Equity <strong>75%</strong></span>
+                        <span>Debt <strong>15%</strong></span>
+                        <span>Gold <strong>10%</strong></span>
+                    </p>
 
-                    <label for="instrument-2">HDFC Mid Cap <small>Mid cap equity</small></label>
-                    <input type="number" id="instrument-2" name="instrument-2" min="0" max="100" step="1" value="0">
-
-                    <label for="instrument-3">Nippon India Large Cap <small>Large cap equity</small></label>
-                    <input type="number" id="instrument-3" name="instrument-3" min="0" max="100" step="1" value="0">
-
-                    <label for="instrument-4">DSP Natural Resources <small>Thematic equity</small></label>
-                    <input type="number" id="instrument-4" name="instrument-4" min="0" max="100" step="1" value="0">
-
-                    <label for="instrument-5">DSP Gilt <small>Government debt</small></label>
-                    <input type="number" id="instrument-5" name="instrument-5" min="0" max="100" step="1" value="0">
-
-                    <label for="instrument-6">Gold BeES <small>Commodity</small></label>
-                    <input type="number" id="instrument-6" name="instrument-6" min="0" max="100" step="1" value="0">
-
-                    <div>
-                        <p>Total allocated</p>
-                        <p>100% — ready</p>
+                    <!-- One .wrow per fund: colour dot, label, share input -->
+                    <div class="wrow">
+                        <span class="swatch c-smallcap"></span>
+                        <label for="instrument-1">Nippon India Small Cap<small>Small cap equity</small></label>
+                        <input class="num" type="number" id="instrument-1" name="instrument-1" min="0" max="100"
+                            step="1" value="25">
                     </div>
+                    <div class="wrow">
+                        <span class="swatch c-midcap"></span>
+                        <label for="instrument-2">HDFC Mid Cap<small>Mid cap equity</small></label>
+                        <input class="num" type="number" id="instrument-2" name="instrument-2" min="0" max="100"
+                            step="1" value="15">
+                    </div>
+                    <div class="wrow">
+                        <span class="swatch c-largecap"></span>
+                        <label for="instrument-3">Nippon India Large Cap<small>Large cap equity</small></label>
+                        <input class="num" type="number" id="instrument-3" name="instrument-3" min="0" max="100"
+                            step="1" value="25">
+                    </div>
+                    <div class="wrow">
+                        <span class="swatch c-thematic"></span>
+                        <label for="instrument-4">DSP Natural Resources<small>Thematic equity</small></label>
+                        <input class="num" type="number" id="instrument-4" name="instrument-4" min="0" max="100"
+                            step="1" value="10">
+                    </div>
+                    <div class="wrow">
+                        <span class="swatch c-gilt"></span>
+                        <label for="instrument-5">DSP Gilt<small>Government debt</small></label>
+                        <input class="num" type="number" id="instrument-5" name="instrument-5" min="0" max="100"
+                            step="1" value="15">
+                    </div>
+                    <div class="wrow">
+                        <span class="swatch c-gold"></span>
+                        <label for="instrument-6">Gold BeES<small>Commodity</small></label>
+                        <input class="num" type="number" id="instrument-6" name="instrument-6" min="0" max="100"
+                            step="1" value="10">
+                    </div>
+
+                    <p class="total">
+                        <span>Total allocated</span>
+                        <b class="total-value">100% — ready</b>
+                    </p>
                 </fieldset>
+            </section>
 
+
+            <!-- ===== CARD 2 · How you'd invest ===== -->
+            <section class="panel">
                 <fieldset>
-                    <legend>How you'd invest</legend>
-                    <p>Choose the pattern to replay through history.</p>
+                    <legend class="panel-title">How you'd invest</legend>
+                    <p class="panel-subtitle">Choose the pattern to replay through history.</p>
 
-                    <fieldset>
-                        <legend>Investment style</legend>
-                        <input type="radio" id="style-sip" name="investment_style" value="sip" checked>
-                        <label for="style-sip">Monthly SIP</label>
-
-                        <input type="radio" id="style-lumpsum" name="investment_style" value="lumpsum">
-                        <label for="style-lumpsum">Lump sum</label>
+                    <!-- Segmented control. The radios are real inputs
+                         made invisible, so keyboard and arrow keys
+                         still work — only the labels are styled. -->
+                    <fieldset class="style-field">
+                        <legend class="field-label">Investment style</legend>
+                        <div class="seg">
+                            <span class="radio-wrap">
+                                <input type="radio" id="style-sip" name="investment_style" value="sip" checked>
+                                <label for="style-sip">Monthly SIP</label>
+                            </span>
+                            <span class="radio-wrap">
+                                <input type="radio" id="style-lumpsum" name="investment_style" value="lumpsum">
+                                <label for="style-lumpsum">Lump sum</label>
+                            </span>
+                        </div>
                     </fieldset>
 
-                    <label for="amount_each_month">Amount each month</label>
-                    <input type="number" id="amount_each_month" name="amount_each_month">
+                    <div class="field-row">
+                        <div class="field">
+                            <label class="field-label" for="amount_each_month">Amount each month</label>
+                            <input class="num" type="number" id="amount_each_month" name="amount_each_month"
+                                value="5000">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="rebalancing">Rebalancing</label>
+                            <select id="rebalancing" name="rebalancing">
+                                <option value="let_it_drift">Let it drift</option>
+                                <option value="rebalance_yearly">Rebalance yearly</option>
+                            </select>
+                        </div>
+                    </div>
 
-                    <label for="rebalancing">Rebalancing</label>
-                    <select id="rebalancing" name="rebalancing">
-                        <option value="let_it_drift">Let it drift</option>
-                        <option value="rebalance_yearly">Rebalance yearly</option>
-                    </select>
+                    <div class="field-row">
+                        <div class="field">
+                            <label class="field-label" for="from">From</label>
+                            <input type="date" id="from" name="from" value="2019-09-11">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="to">To</label>
+                            <input type="date" id="to" name="to" value="2026-08-19">
+                        </div>
+                    </div>
 
-                    <label for="from">From</label>
-                    <input type="date" id="from" name="from">
-
-                    <label for="to">To</label>
-                    <input type="date" id="to" name="to">
+                    <button type="submit" class="btn-primary">Run the numbers</button>
+                    <p class="note">History starts 11 Sep 2019 — that's as far back as the benchmark fund goes.</p>
                 </fieldset>
+            </section>
+        </form>
 
-                <button type="submit">Run the numbers</button>
-                <p>History starts 11 Sep 2019 — that's as far back as the benchmark fund goes.</p>
-            </form>
-        </section>
 
-        <section>
-            <div>
-                <p>Your mix vs benchmark</p>
-                <h2>₹5,000 a month, 83 months</h2>
-                <p>Sep 2019 — Aug 2026</p>
-            </div>
+        <!-- ─── RIGHT COLUMN ────────────────────────────────── -->
+        <div class="col">
 
-            <div>
-                <div>
-                    <p>+2.2%</p>
-                    <p>higher annual return</p>
+            <!-- ===== CARD 3 · Your mix vs benchmark ===== -->
+            <section class="panel">
+                <div class="result-head">
+                    <div>
+                        <p class="eyebrow">Your mix vs benchmark</p>
+                        <h2 class="result-headline">₹5,000 a month, 83 months</h2>
+                    </div>
+                    <p class="result-window num">Sep 2019 — Aug 2026</p>
                 </div>
 
-                <div>
-                    <p>14%</p>
-                    <p>less bumpy</p>
+                <div class="verdicts">
+                    <div class="verdict">
+                        <p class="verdict-value">+2.2%</p>
+                        <p class="verdict-label">higher annual return</p>
+                    </div>
+                    <div class="verdict">
+                        <p class="verdict-value">14%</p>
+                        <p class="verdict-label">less bumpy</p>
+                    </div>
+                    <div class="verdict">
+                        <p class="verdict-value">36%</p>
+                        <p class="verdict-label">smaller worst fall</p>
+                    </div>
                 </div>
 
-                <div>
-                    <p>36%</p>
-                    <p>smaller worst fall</p>
+                <!-- Chart. Every colour and stroke is set from the
+                     stylesheet via these classes, so the markup below
+                     is only shapes and coordinates. -->
+                <div class="chart-wrap">
+                    <p class="chart-legend">
+                        <span><i class="legend-mark mark-mix"></i>Your mix</span>
+                        <span><i class="legend-mark mark-bm"></i>Nifty 500 index fund</span>
+                    </p>
+
+                    <svg viewBox="0 0 720 248" width="100%" role="img"
+                        aria-label="Growth of the mix against the benchmark from 2019 to 2026. Both lines fall sharply in early 2020 then recover, with the mix falling less and ending higher.">
+
+                        <!-- horizontal grid + baseline -->
+                        <line class="chart-grid" x1="46" y1="18" x2="714" y2="18"></line>
+                        <line class="chart-grid" x1="46" y1="70" x2="714" y2="70"></line>
+                        <line class="chart-grid" x1="46" y1="122" x2="714" y2="122"></line>
+                        <line class="chart-grid" x1="46" y1="174" x2="714" y2="174"></line>
+                        <line class="chart-baseline" x1="46" y1="212" x2="714" y2="212"></line>
+
+                        <!-- money labels down the left -->
+                        <text class="chart-label" x="40" y="22" text-anchor="end">₹90L</text>
+                        <text class="chart-label" x="40" y="74" text-anchor="end">₹70L</text>
+                        <text class="chart-label" x="40" y="126" text-anchor="end">₹50L</text>
+                        <text class="chart-label" x="40" y="178" text-anchor="end">₹30L</text>
+
+                        <!-- the covid crash marker -->
+                        <line class="chart-marker" x1="124" y1="18" x2="124" y2="212"></line>
+                        <text class="chart-marker-label" x="130" y="32">Mar 2020</text>
+
+                        <!-- the two lines -->
+                        <path class="chart-line-mix"
+                            d="M46 208 L96 202 L124 220 L156 196 L206 180 L256 164 L306 154 L356 136 L406 128 L456 108 L506 98 L556 76 L606 66 L656 46 L714 30">
+                        </path>
+                        <path class="chart-line-bm"
+                            d="M46 210 L96 205 L124 232 L156 208 L206 194 L256 182 L306 176 L356 160 L406 156 L456 140 L506 134 L556 114 L606 108 L656 90 L714 72">
+                        </path>
+
+                        <!-- years along the bottom -->
+                        <text class="chart-label" x="46" y="236">2019</text>
+                        <text class="chart-label" x="256" y="236">2021</text>
+                        <text class="chart-label" x="456" y="236">2023</text>
+                        <text class="chart-label" x="660" y="236">2026</text>
+                    </svg>
                 </div>
-            </div>
 
-            <div>
-                <div>
-                    <p>Your mix</p>
-                    <p>Nifty 500 index fund</p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Measure</th>
+                                <th>Your mix</th>
+                                <th>Benchmark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="stacked-label">Return a year<small>XIRR, since you invest monthly</small>
+                                </td>
+                                <td class="num mix">18.4%</td>
+                                <td class="num bm">16.2%</td>
+                            </tr>
+                            <tr>
+                                <td class="stacked-label">Bumpiness<small>How much it swings, per year</small></td>
+                                <td class="num mix">13.8%</td>
+                                <td class="num bm">16.1%</td>
+                            </tr>
+                            <tr>
+                                <td class="stacked-label">Worst fall<small>Peak to trough, at its lowest</small></td>
+                                <td class="num mix">−24.6%</td>
+                                <td class="num bm">−38.3%</td>
+                            </tr>
+                            <tr>
+                                <td class="stacked-label">Sensitivity<small>Beta — 1.0 moves with the market</small>
+                                </td>
+                                <td class="num mix">0.82</td>
+                                <td class="num bm">1.00</td>
+                            </tr>
+                            <tr>
+                                <td class="stacked-label">You put in</td>
+                                <td class="num mix">₹4,15,000</td>
+                                <td class="num bm">₹4,15,000</td>
+                            </tr>
+                            <tr>
+                                <td class="stacked-label">You'd have</td>
+                                <td class="num mix">₹8,02,400</td>
+                                <td class="num bm">₹7,38,100</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <svg viewBox="0 0 720 260" width="100%" height="240" role="img"
-                    aria-label="Growth of the mix against the benchmark from 2019 to 2026. Both fall sharply in early 2020 then recover, with the mix falling less and ending higher.">
-                    <line x1="40" y1="20" x2="710" y2="20" stroke="#EDEEF0"></line>
-                    <line x1="40" y1="76" x2="710" y2="76" stroke="#EDEEF0"></line>
-                    <line x1="40" y1="132" x2="710" y2="132" stroke="#EDEEF0"></line>
-                    <line x1="40" y1="188" x2="710" y2="188" stroke="#EDEEF0"></line>
-                    <line x1="40" y1="228" x2="710" y2="228" stroke="#DDDFE3"></line>
-                    <text x="34" y="24" text-anchor="end" font-size="11" fill="#98A0AE"
-                        font-family="IBM Plex Mono">₹90L</text>
-                    <text x="34" y="80" text-anchor="end" font-size="11" fill="#98A0AE"
-                        font-family="IBM Plex Mono">₹70L</text>
-                    <text x="34" y="136" text-anchor="end" font-size="11" fill="#98A0AE"
-                        font-family="IBM Plex Mono">₹50L</text>
-                    <text x="34" y="192" text-anchor="end" font-size="11" fill="#98A0AE"
-                        font-family="IBM Plex Mono">₹30L</text>
 
-                    <path
-                        d="M40 224 L90 218 L118 236 L150 212 L200 196 L250 178 L300 168 L350 148 L400 140 L450 118 L500 108 L550 84 L600 74 L650 52 L710 34"
-                        fill="none" stroke="#A67C2E" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
-                    </path>
-                    <path
-                        d="M40 226 L90 221 L118 248 L150 224 L200 210 L250 196 L300 190 L350 172 L400 168 L450 150 L500 144 L550 122 L600 116 L650 96 L710 78"
-                        fill="none" stroke="#7C8798" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"
-                        stroke-linecap="round"></path>
+                <p class="note">Simulated on published NAVs. Past performance doesn't predict future returns.</p>
+            </section>
 
-                    <line x1="118" y1="20" x2="118" y2="252" stroke="#A63D2E" stroke-width="1" stroke-dasharray="3 3"
-                        opacity=".55"></line>
-                    <text x="124" y="34" font-size="11" fill="#A63D2E" font-family="IBM Plex Sans">Mar 2020</text>
 
-                    <text x="40" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2019</text>
-                    <text x="250" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2021</text>
-                    <text x="450" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2023</text>
-                    <text x="650" y="252" font-size="11" fill="#98A0AE" font-family="IBM Plex Mono">2026</text>
-                </svg>
-            </div>
+            <!-- ===== CARD 4 · Each fund on its own ===== -->
+            <section class="panel">
+                <h2 class="eyebrow">Each fund on its own</h2>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Measure</th>
-                        <th>Your mix</th>
-                        <th>Benchmark</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>Return a year</p>
-                            <p>XIRR, since you invest monthly</p>
-                        </td>
-                        <td>18.4%</td>
-                        <td>16.2%</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Bumpiness</p>
-                            <p>How much it swings, per year</p>
-                        </td>
-                        <td>13.8%</td>
-                        <td>16.1%</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Worst fall</p>
-                            <p>Peak to trough, at its lowest</p>
-                        </td>
-                        <td>−24.6%</td>
-                        <td>−38.3%</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Sensitivity</p>
-                            <p>Beta — 1.0 moves with the market</p>
-                        </td>
-                        <td>0.82</td>
-                        <td>1.00</td>
-                    </tr>
-                    <tr>
-                        <td>You put in</td>
-                        <td>₹4,15,000</td>
-                        <td>₹4,15,000</td>
-                    </tr>
-                    <tr>
-                        <td>You'd have</td>
-                        <td>₹8,02,400</td>
-                        <td>₹7,38,100</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>Simulated on published NAVs. Past performance doesn't predict future returns.</p>
-        </section>
-
-        <section>
-            <h2>Each fund on its own</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Fund</th>
-                        <th>Share</th>
-                        <th>Shape</th>
-                        <th>Return</th>
-                        <th>Bumpiness</th>
-                        <th>Worst fall</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Nippon India Small Cap</td>
-                        <td>25%</td>
-                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
-                                aria-label="Jagged climb with a sharp early dip">
-                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
-                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
-                            </svg></td>
-                        <td>26.4%</td>
-                        <td>19.8%</td>
-                        <td>−34.2%</td>
-                    </tr>
-                    <tr>
-                        <td>HDFC Mid Cap</td>
-                        <td>15%</td>
-                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
-                                aria-label="Jagged climb with a sharp early dip">
-                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
-                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
-                            </svg></td>
-                        <td>22.1%</td>
-                        <td>17.6%</td>
-                        <td>−31.8%</td>
-                    </tr>
-                    <tr>
-                        <td>Nippon India Large Cap</td>
-                        <td>25%</td>
-                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
-                                aria-label="Jagged climb with a sharp early dip">
-                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
-                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
-                            </svg></td>
-                        <td>17.3%</td>
-                        <td>16.2%</td>
-                        <td>−38.9%</td>
-                    </tr>
-                    <tr>
-                        <td>DSP Natural Resources</td>
-                        <td>10%</td>
-                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
-                                aria-label="Jagged climb with a sharp early dip">
-                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
-                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
-                            </svg></td>
-                        <td>19.8%</td>
-                        <td>22.4%</td>
-                        <td>−41.3%</td>
-                    </tr>
-                    <tr>
-                        <td>DSP Gilt</td>
-                        <td>15%</td>
-                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
-                                aria-label="Jagged climb with a sharp early dip">
-                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
-                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
-                            </svg></td>
-                        <td>7.1%</td>
-                        <td>3.6%</td>
-                        <td>−5.2%</td>
-                    </tr>
-                    <tr>
-                        <td>Gold BeES</td>
-                        <td>10%</td>
-                        <td><svg width="72" height="22" viewBox="0 0 72 22" role="img"
-                                aria-label="Jagged climb with a sharp early dip">
-                                <polyline points="0,18 12,20 20,6 30,14 42,4 54,9 62,3 72,1" fill="none"
-                                    stroke="#A67C2E" stroke-width="1.5" stroke-linejoin="round"></polyline>
-                            </svg></td>
-                        <td>14.9%</td>
-                        <td>13.1%</td>
-                        <td>−18.7%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fund</th>
+                                <th>Share</th>
+                                <th class="spark-cell">Shape</th>
+                                <th>Return</th>
+                                <th>Bumpiness</th>
+                                <th>Worst fall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nippon India Small Cap</td>
+                                <td class="num">25%</td>
+                                <td class="spark-cell">
+                                    <svg width="72" height="20" viewBox="0 0 72 20" role="img"
+                                        aria-label="Jagged, deep early dip, strong finish">
+                                        <polyline class="spark-line" points="0,16 12,18 20,5 30,12 42,3 54,8 62,3 72,1">
+                                        </polyline>
+                                    </svg>
+                                </td>
+                                <td class="num">26.4%</td>
+                                <td class="num">19.8%</td>
+                                <td class="num neg">−34.2%</td>
+                            </tr>
+                            <tr>
+                                <td>HDFC Mid Cap</td>
+                                <td class="num">15%</td>
+                                <td class="spark-cell">
+                                    <svg width="72" height="20" viewBox="0 0 72 20" role="img"
+                                        aria-label="Steady climb with a mid-period dip">
+                                        <polyline class="spark-line" points="0,15 12,17 20,7 30,13 42,6 54,7 62,4 72,2">
+                                        </polyline>
+                                    </svg>
+                                </td>
+                                <td class="num">22.1%</td>
+                                <td class="num">17.6%</td>
+                                <td class="num neg">−31.8%</td>
+                            </tr>
+                            <tr>
+                                <td>Nippon India Large Cap</td>
+                                <td class="num">25%</td>
+                                <td class="spark-cell">
+                                    <svg width="72" height="20" viewBox="0 0 72 20" role="img"
+                                        aria-label="Deep early dip, then a smooth recovery">
+                                        <polyline class="spark-line"
+                                            points="0,12 12,11 20,18 30,15 42,10 54,7 62,5 72,3"></polyline>
+                                    </svg>
+                                </td>
+                                <td class="num">17.3%</td>
+                                <td class="num">16.2%</td>
+                                <td class="num neg">−38.9%</td>
+                            </tr>
+                            <tr>
+                                <td>DSP Natural Resources</td>
+                                <td class="num">10%</td>
+                                <td class="spark-cell">
+                                    <svg width="72" height="20" viewBox="0 0 72 20" role="img"
+                                        aria-label="Most volatile of the six, deepest fall">
+                                        <polyline class="spark-line"
+                                            points="0,13 12,17 20,19 30,9 42,14 54,6 62,9 72,2">
+                                        </polyline>
+                                    </svg>
+                                </td>
+                                <td class="num">19.8%</td>
+                                <td class="num">22.4%</td>
+                                <td class="num neg">−41.3%</td>
+                            </tr>
+                            <tr>
+                                <td>DSP Gilt</td>
+                                <td class="num">15%</td>
+                                <td class="spark-cell">
+                                    <svg width="72" height="20" viewBox="0 0 72 20" role="img"
+                                        aria-label="Smooth steady line, almost no dip">
+                                        <polyline class="spark-line"
+                                            points="0,16 12,15 20,14 30,13 42,11 54,10 62,9 72,7"></polyline>
+                                    </svg>
+                                </td>
+                                <td class="num">7.1%</td>
+                                <td class="num">3.6%</td>
+                                <td class="num neg">−5.2%</td>
+                            </tr>
+                            <tr>
+                                <td>Gold BeES</td>
+                                <td class="num">10%</td>
+                                <td class="spark-cell">
+                                    <svg width="72" height="20" viewBox="0 0 72 20" role="img"
+                                        aria-label="Flat for years, then a late rise">
+                                        <polyline class="spark-line"
+                                            points="0,15 12,16 20,15 30,14 42,13 54,10 62,6 72,3"></polyline>
+                                    </svg>
+                                </td>
+                                <td class="num">14.9%</td>
+                                <td class="num">13.1%</td>
+                                <td class="num neg">−18.7%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </main>
 
+
+    <!-- ==========================================================
+         FOOTER
+         ========================================================== -->
     <footer>
         <p>For educational and informational purposes only. Not investment advice.</p>
         <nav>
-            <a href="https://github.com/shubh0710">Github</a>
+            <a href="https://github.com/shubh0710">GitHub</a>
             <a href="https://in.linkedin.com/">LinkedIn</a>
         </nav>
     </footer>
+
 </body>
 
 </html>
