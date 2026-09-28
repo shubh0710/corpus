@@ -1,0 +1,79 @@
+/* The sticky bar itself.
+   sticky + top: 0 means "scroll normally until you touch the top
+   of the screen, then stay stuck there". z-index keeps it above the
+   page content that scrolls underneath. */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    /* 88% white plus a blur of whatever scrolls underneath = frosted glass */
+    background-color: rgba(255, 255, 255, 0.88);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Inner box: capped width, centred, holds the content in one row.
+   space-between pushes the wordmark left and the nav/button right. */
+.header-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-3) var(--page-pad);
+    min-height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.wordmark {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+/* the "." after corpus */
+.wordmark span {
+    color: var(--color-brass);
+}
+
+/* nav links + button sit side by side */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+header nav {
+    display: flex;
+    gap: var(--space-5);
+}
+
+header nav a {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    transition: color 0.15s;
+}
+
+header nav a:hover {
+    color: var(--color-text-primary);
+}
+
+.btn-ghost {
+    padding: 7px var(--space-4);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    white-space: nowrap;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.btn-ghost:hover {
+    border-color: var(--color-text-secondary);
+    box-shadow: var(--shadow-lift);
+}
