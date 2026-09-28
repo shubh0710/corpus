@@ -1,19 +1,28 @@
-import FundRow from "./components/FundRow";
-import { FUNDS } from "./lib/funds";
+import Header from "./components/Header";
+import BuildYourMix from "./components/BuildYourMix";
+import HowYoudInvest from "./components/HowYoudInvest";
+import MixVsBenchmark from "./components/MixVsBenchmark";
+import EachFundOnItsOwn from "./components/EachFundOnItsOwn";
+import Footer from "./components/Footer";
+import "./App.css";
 
 function App() {
   return (
-    // Fragment (<>...</>) — an invisible wrapper. A component can only
-    // return ONE root element, but .map() below produces 6 separate
-    // FundRow elements as siblings — this satisfies that rule without
-    // adding an extra, unwanted <div> to the actual page markup.
     <>
-      {FUNDS.map(fund => (
-        // schemeCode is a good key because it's unique per fund and never changes.
-        <FundRow key={fund.schemeCode} fund={fund} />
-      ))}
+      <Header />
+      <main>
+        <form className="col">
+          <BuildYourMix />
+          <HowYoudInvest />
+        </form>
+        <div className="col">
+          <MixVsBenchmark />
+          <EachFundOnItsOwn />
+        </div>
+      </main>
+      <Footer />
     </>
-  )
+  );
 }
 
 export default App
