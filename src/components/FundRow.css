@@ -1,0 +1,31 @@
+.swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;     /* slightly rounded square, not a full circle */
+    display: inline-block;  /* a <span> ignores width/height unless it's inline-block or block */
+}
+
+/* One colour class per fund. */
+.c-smallcap {
+    background-color: var(--fund-smallcap);
+}
+
+.c-midcap {
+    background-color: var(--fund-midcap);
+}
+
+.c-largecap {
+    background-color: var(--fund-largecap);
+}
+
+.c-thematic {
+    background-color: var(--fund-thematic);
+}
+
+.c-gilt {
+    background-color: var(--fund-gilt);
+}
+
+.c-gold {
+    background-color: var(--fund-gold);
+}
