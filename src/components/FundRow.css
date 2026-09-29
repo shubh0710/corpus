@@ -1,31 +1,42 @@
+/* dot · name · share input.
+   minmax(0, 1fr) instead of plain 1fr: a 1fr track refuses to
+   shrink below its content, so a long fund name would shove
+   the input out of the card. */
+.wrow {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) 72px;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.wrow:last-of-type {
+    border-bottom: none;
+}
+
 .swatch {
     width: 8px;
     height: 8px;
-    border-radius: 2px;     /* slightly rounded square, not a full circle */
-    display: inline-block;  /* a <span> ignores width/height unless it's inline-block or block */
+    border-radius: 2px;
 }
 
-/* One colour class per fund. */
-.c-smallcap {
-    background-color: var(--fund-smallcap);
+.wrow label {
+    font-size: 13px;
+    line-height: 1.35;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
-.c-midcap {
-    background-color: var(--fund-midcap);
+.wrow input {
+    padding: 6px 10px;
 }
 
-.c-largecap {
-    background-color: var(--fund-largecap);
-}
-
-.c-thematic {
-    background-color: var(--fund-thematic);
-}
-
-.c-gilt {
-    background-color: var(--fund-gilt);
-}
-
-.c-gold {
-    background-color: var(--fund-gold);
+/* the category text under the fund name */
+.wrow label small {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    margin-top: 1px;
 }
