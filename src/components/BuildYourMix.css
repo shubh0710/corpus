@@ -36,3 +36,7 @@
     font-weight: 500;
     color: var(--color-accent-strong);
 }
+
+.total-value.is-off {
+    color: var(--color-negative);
+}
