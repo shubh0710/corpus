@@ -8,6 +8,10 @@ import Footer from "./components/Footer";
 import { FUNDS } from "./lib/funds";
 import "./App.css";
 
+// App is the top of the page. Every card is its own component in
+// /components, and App's job is to put them together and to hold the
+// data that more than one card needs (the shares and the plan).
+
 // The starting shares, built once as one object keyed by scheme code:
 // { 118778: 25, 118989: 15, ... }
 // It sits outside App() so it's built once, not on every re-render.
@@ -15,6 +19,18 @@ const initialShares = {};
 for (const fund of FUNDS) {
   initialShares[fund.schemeCode] = fund.defaultShare;
 }
+
+// The starting choices for the "How you'd invest" card.
+// SIP and lump sum each get their own amount, so flipping between the
+// two modes doesn't throw away what the person typed in the other one.
+const initialPlan = {
+  style: "sip",
+  sipAmount: 5000,
+  lumpsumAmount: 100000,
+  rebalancing: "let_it_drift",
+  from: "2019-09-11",
+  to: "2026-08-19"
+};
 
 function App() {
   // The one place that remembers every fund's share. It lives here in App
@@ -35,15 +51,36 @@ function App() {
     setShares({ ...shares, [schemeCode]: value });
   }
 
+  // Same idea as `shares`, but for the "How you'd invest" card.
+  // `plan` is what's chosen right now, `setPlan` is how we change it.
+  const [plan, setPlan] = useState(initialPlan);
+
+  // Any box in that card calls this. `field` says which one changed
+  // ("style", "sipAmount", "from"...) and `value` is what it changed to.
+  function handlePlanChange(field, value) {
+    setPlan({ ...plan, [field]: value });
+  }
+
+  // Runs when the form is submitted, which happens when someone clicks
+  // "Run the numbers" or presses Enter inside a box.
+  function handleSubmit(event) {
+    // Left alone, the browser would send the form off and reload the page,
+    // and everything typed so far would disappear. This stops that.
+    event.preventDefault();
+    console.log("shares:", shares);
+    console.log("plan:", plan);
+  }
+
   return (
     <>
       <Header />
       <main>
-        {/* Left column: the form cards */}
-        <form className="col">
+        {/* Left column: the form cards. onSubmit is what catches the button click */}
+        <form className="col" onSubmit={handleSubmit}>
           {/* Pass the shares down, plus the function a row calls to change one */}
           <BuildYourMix shares={shares} onShareChange={handleShareChange} />
-          <HowYoudInvest />
+          {/* Give the "How you'd invest" card the current plan so its boxes can show it, plus the function they call to change it */}
+          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} />
         </form>
 
         {/* Right column: the result cards */}
