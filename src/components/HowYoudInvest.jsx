@@ -1,4 +1,5 @@
 import "./HowYoudInvest.css";
+import { formatDisplayDate } from "../lib/formatDisplayDate";
 
 // The two investment styles, kept as data so the radio buttons can be
 // built with .map() instead of writing each one out by hand.
@@ -16,16 +17,39 @@ const REBALANCING_OPTIONS = [
     { value: "rebalance_yearly", label: "Rebalance yearly" }
 ];
 
-// This card doesn't remember anything itself. `plan` (what's chosen right
-// now) comes down from App, and `onPlanChange` is the function we call
-// to tell App that something changed.
-export default function HowYoudInvest({ plan, onPlanChange }) {
+// This card doesn't remember anything itself. Everything it needs comes
+// down from App as props:
+//   plan         - what's chosen right now (style, amounts, dates...)
+//   onPlanChange - the function we call to tell App that something changed
+//   range        - the first and last dates the fund data covers
+//                  (it's null until the data has finished loading)
+//   status       - "loading", "error" or "ready", so we know what to show
+export default function HowYoudInvest({ plan, onPlanChange, range, status }) {
     // SIP and lump sum each keep their own amount inside the plan. The amount
     // box shows and edits whichever one matches the mode that's picked.
     const amountKey = plan.style === "sip" ? "sipAmount" : "lumpsumAmount";
 
     // The label above the amount box changes with the mode too.
     const amountLabel = plan.style === "sip" ? "Amount each month" : "Amount to invest";
+
+    // `range` is null while the data is still loading, and asking null for
+    // .start would crash the page. So we check first: use range.start if range
+    // exists, otherwise use undefined. A date box given undefined for min or max
+    // just has no limit yet.
+    const rangeStart = range ? range.start : undefined;
+    const rangeEnd = range ? range.end : undefined;
+
+    // The small text under the button. It starts as the "loading" message, and
+    // gets swapped once we know whether the data arrived or failed.
+    // `noteClass` is the CSS class on that text: plain grey normally, red on error.
+    let noteText = "Loading fund history…";
+    let noteClass = "note";
+    if (range) {
+        noteText = `History starts ${formatDisplayDate(range.start)} — that's as far back as the data goes.`;
+    } else if (status === "error") {
+        noteText = "Couldn't load the fund data. Check your connection and refresh the page.";
+        noteClass = "note is-error";
+    }
 
     return (
         <section className="panel">
@@ -76,23 +100,34 @@ export default function HowYoudInvest({ plan, onPlanChange }) {
                     </div>
                 </div>
 
+                {/* `min` and `max` are the limits of the calendar: nobody can pick a date
+                    before the history starts or after it ends. The two boxes also limit each
+                    other: "From" can't go past "To", and "To" can't go before "From".
+                    The `||` means "use the left side, but if it's empty use the right side", so
+                    while "To" is still empty, "From" falls back to the end of the data. */}
                 <div className="field-row">
                     <div className="field">
                         <label className="field-label" htmlFor="from">From</label>
                         <input type="date" id="from" name="from" value={plan.from}
+                            min={rangeStart} max={plan.to || rangeEnd}
                             onChange={event => onPlanChange("from", event.target.value)} />
                     </div>
                     <div className="field">
                         <label className="field-label" htmlFor="to">To</label>
                         <input type="date" id="to" name="to" value={plan.to}
+                            min={plan.from || rangeStart} max={rangeEnd}
                             onChange={event => onPlanChange("to", event.target.value)} />
                     </div>
                 </div>
 
                 {/* type="submit" means clicking this (or pressing Enter in a box) submits the
-                    form, and App's handleSubmit catches it */}
-                <button type="submit" className="btn-primary">Run the numbers</button>
-                <p className="note">History starts 11 Sep 2019 — that's as far back as the benchmark fund goes.</p>
+                    form, and App's handleSubmit catches it. `disabled` greys it out until the
+                    data is ready, since there's nothing to calculate before that, and the
+                    label changes so the person knows why it's greyed out. */}
+                <button type="submit" className="btn-primary" disabled={status !== "ready"}>
+                    {status === "loading" ? "Loading fund data…" : "Run the numbers"}
+                </button>
+                <p className={noteClass}>{noteText}</p>
             </fieldset>
         </section>
     );

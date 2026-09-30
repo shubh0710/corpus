@@ -79,3 +79,12 @@
 .btn-primary:hover {
     opacity: 0.87;
 }
+
+.btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.note.is-error {
+    color: var(--color-negative);
+}

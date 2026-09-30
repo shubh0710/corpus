@@ -1,4 +1,6 @@
-import { useState } from "react";
+// useState gives a component a memory, and useEffect lets it run code at
+// certain moments (here: once, when the page first appears)
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import BuildYourMix from "./components/BuildYourMix";
 import HowYoudInvest from "./components/HowYoudInvest";
@@ -6,6 +8,8 @@ import MixVsBenchmark from "./components/MixVsBenchmark";
 import EachFundOnItsOwn from "./components/EachFundOnItsOwn";
 import Footer from "./components/Footer";
 import { FUNDS } from "./lib/funds";
+import { fetchAllFundsData } from "./lib/fetchAllFunds";
+import { computeDateRange } from "./lib/computeDateRange";
 import "./App.css";
 
 // App is the top of the page. Every card is its own component in
@@ -23,13 +27,15 @@ for (const fund of FUNDS) {
 // The starting choices for the "How you'd invest" card.
 // SIP and lump sum each get their own amount, so flipping between the
 // two modes doesn't throw away what the person typed in the other one.
+// `from` and `to` start empty because we don't know the dates yet. They
+// get filled in once the fund data has loaded (see the useEffect below).
 const initialPlan = {
   style: "sip",
   sipAmount: 5000,
   lumpsumAmount: 100000,
   rebalancing: "let_it_drift",
-  from: "2019-09-11",
-  to: "2026-08-19"
+  from: "",
+  to: ""
 };
 
 function App() {
@@ -61,6 +67,42 @@ function App() {
     setPlan({ ...plan, [field]: value });
   }
 
+  const [status, setStatus] = useState("loading");
+
+  // The first and last dates that all the funds share, like
+  // { start: "2019-09-11", end: "2026-08-19" }. It's null (nothing yet)
+  // until the data arrives, and the cards use it to limit the date boxes.
+  const [range, setRange] = useState(null);
+
+  // Runs after the page first appears on screen. The empty [] at the very end
+  // means "do this once, and not again on later re-draws". That's what we want
+  // for downloading the fund data, because it only needs to happen once.
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadFunds() {
+      try {
+        const result = await fetchAllFundsData();
+        if (ignore) return;
+
+        const dateRange = computeDateRange(result.fundsData, result.benchmarkData);
+
+        setRange(dateRange);
+        setPlan(current => ({ ...current, from: dateRange.start, to: dateRange.end }));
+        setStatus("ready");
+      } catch (error) {
+        if (ignore) return;
+        console.error("Could not load fund data:", error);
+        setStatus("error");
+      }
+    }
+    loadFunds();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   // Runs when the form is submitted, which happens when someone clicks
   // "Run the numbers" or presses Enter inside a box.
   function handleSubmit(event) {
@@ -80,7 +122,7 @@ function App() {
           {/* Pass the shares down, plus the function a row calls to change one */}
           <BuildYourMix shares={shares} onShareChange={handleShareChange} />
           {/* Give the "How you'd invest" card the current plan so its boxes can show it, plus the function they call to change it */}
-          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} />
+          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} range={range} status={status} />
         </form>
 
         {/* Right column: the result cards */}
