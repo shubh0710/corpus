@@ -184,6 +184,15 @@ select:hover {
   border-color: var(--color-text-muted);
 }
 
+/* A box the check has flagged. Its place in the file matters: it sits
+   BETWEEN :hover and :focus on purpose. These three rules are equally
+   strong, so when more than one applies the one written last wins.
+   Written after :hover, red beats the grey hover colour. Written before
+   :focus, brass beats red while the person is typing in the box. */
+input[aria-invalid="true"] {
+  border-color: var(--color-negative);
+}
+
 input:focus,
 select:focus {
   outline: none;
@@ -195,6 +204,15 @@ select:focus {
   font-size: 12px;
   color: var(--color-text-muted);
   margin-top: var(--space-3);
+  line-height: 1.5;
+}
+
+/* The red line under a box that failed the check. Same size and
+   line-height as .note, just red and with a smaller gap above it. */
+.field-error {
+  font-size: 12px;
+  color: var(--color-negative);
+  margin-top: var(--space-1);
   line-height: 1.5;
 }
 

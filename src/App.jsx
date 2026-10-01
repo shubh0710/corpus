@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import { FUNDS } from "./lib/funds";
 import { fetchAllFundsData } from "./lib/fetchAllFunds";
 import { computeDateRange } from "./lib/computeDateRange";
+import { validateInputs } from "./lib/validateInputs";
 import "./App.css";
 
 // App is the top of the page. Every card is its own component in
@@ -74,6 +75,22 @@ function App() {
   // until the data arrives, and the cards use it to limit the date boxes.
   const [range, setRange] = useState(null);
 
+  // Whether the error messages are allowed to show yet. It starts false so a
+  // fresh page isn't covered in red, and becomes true the first time someone
+  // clicks "Run the numbers". It stays true after that.
+  const [showErrors, setShowErrors] = useState(false);
+
+  // What's wrong with the current choices, worked out again on every render
+  // from `shares` and `plan`. It's not stored in state, because it can always be
+  // worked out from what we already have. validateInputs needs `range`, which
+  // is null until the data has loaded, so before that we don't call it.
+  const errors = status === "ready" ? validateInputs({ shares, plan, range }) : {};
+
+  // The messages the cards actually get to show: none ({}) until the first submit.
+  // handleSubmit below still uses the full `errors`, so it can always tell whether
+  // something is wrong, even on that very first click.
+  const visibleErrors = showErrors ? errors : {};
+
   // Runs after the page first appears on screen. The empty [] at the very end
   // means "do this once, and not again on later re-draws". That's what we want
   // for downloading the fund data, because it only needs to happen once.
@@ -109,6 +126,11 @@ function App() {
     // Left alone, the browser would send the form off and reload the page,
     // and everything typed so far would disappear. This stops that.
     event.preventDefault();
+    // From now on the messages are allowed to show
+    setShowErrors(true);
+    // If anything is wrong, stop here. The messages are already on screen.
+    // Object.keys(errors) lists the broken fields, and an empty list means all is fine.
+    if (Object.keys(errors).length > 0) return;
     console.log("shares:", shares);
     console.log("plan:", plan);
   }
@@ -118,11 +140,11 @@ function App() {
       <Header />
       <main>
         {/* Left column: the form cards. onSubmit is what catches the button click */}
-        <form className="col" onSubmit={handleSubmit}>
+        <form className="col" onSubmit={handleSubmit} noValidate>
           {/* Pass the shares down, plus the function a row calls to change one */}
-          <BuildYourMix shares={shares} onShareChange={handleShareChange} />
+          <BuildYourMix shares={shares} onShareChange={handleShareChange} errors={visibleErrors} />
           {/* Give the "How you'd invest" card the current plan so its boxes can show it, plus the function they call to change it */}
-          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} range={range} status={status} />
+          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} range={range} status={status} errors={visibleErrors} />
         </form>
 
         {/* Right column: the result cards */}
@@ -136,4 +158,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

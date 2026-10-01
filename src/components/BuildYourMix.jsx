@@ -1,13 +1,17 @@
 import FundRow from "./FundRow";
 import { FUNDS } from "../lib/funds";
-import './BuildYourMix.css'
+import "./BuildYourMix.css";
 
 // Card 1: "Build your mix". It gets two things from App:
 //   shares        - the current share of every fund, e.g. { 118778: 25, ... }
 //   onShareChange - the function a row calls when its box changes
 // Everything shown here (ribbon, legend, total) is worked out from `shares`
 // each time the card draws, so it can never disagree with the boxes.
-export default function BuildYourMix({ shares, onShareChange }) {
+export default function BuildYourMix({ shares, onShareChange, errors }) {
+    // The id of the message under the Total line, or undefined when there is no message.
+    // Each share box gets it so a screen reader can read the message when the box is focused.
+    const sharesErrorId = errors.shares ? "shares-error" : undefined;
+
     // Running totals: one bucket per asset class (for the legend),
     // plus one grand total for the "Total allocated" line
     const byClass = { equity: 0, debt: 0, gold: 0 };
@@ -68,6 +72,7 @@ export default function BuildYourMix({ shares, onShareChange }) {
                         fund={fund}
                         share={shares[fund.schemeCode]}
                         onShareChange={onShareChange}
+                        errorId={sharesErrorId}
                     />
                 ))}
 
@@ -75,6 +80,8 @@ export default function BuildYourMix({ shares, onShareChange }) {
                     <span>Total allocated</span>
                     <b className={`total-value ${isReady ? "" : "is-off"}`}>{totalText}</b>
                 </p>
+                {/* One message for the whole group, shown only when there is one */}
+                {errors.shares && <p className="field-error" id={sharesErrorId}>{errors.shares}</p>}
             </fieldset>
         </section>
     );
