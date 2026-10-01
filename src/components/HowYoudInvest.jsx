@@ -24,7 +24,7 @@ const REBALANCING_OPTIONS = [
 //   range        - the first and last dates the fund data covers
 //                  (it's null until the data has finished loading)
 //   status       - "loading", "error" or "ready", so we know what to show
-export default function HowYoudInvest({ plan, onPlanChange, range, status }) {
+export default function HowYoudInvest({ plan, onPlanChange, range, status, errors }) {
     // SIP and lump sum each keep their own amount inside the plan. The amount
     // box shows and edits whichever one matches the mode that's picked.
     const amountKey = plan.style === "sip" ? "sipAmount" : "lumpsumAmount";
@@ -85,7 +85,11 @@ export default function HowYoudInvest({ plan, onPlanChange, range, status }) {
                             An empty box stays empty, otherwise clearing it would leave a stray 0. */}
                         <input className="num" type="number" id="amount" name="amount"
                             value={plan[amountKey]}
+                            aria-invalid={Boolean(errors.amount)}
+                            aria-describedby={errors.amount ? "amount-error" : undefined}
                             onChange={event => onPlanChange(amountKey, event.target.value === "" ? "" : Number(event.target.value))} />
+                        {/* The message only exists when there is one */}
+                        {errors.amount && <p className="field-error" id="amount-error">{errors.amount}</p>}
                     </div>
                     <div className="field">
                         <label className="field-label" htmlFor="rebalancing">Rebalancing</label>
@@ -110,13 +114,19 @@ export default function HowYoudInvest({ plan, onPlanChange, range, status }) {
                         <label className="field-label" htmlFor="from">From</label>
                         <input type="date" id="from" name="from" value={plan.from}
                             min={rangeStart} max={plan.to || rangeEnd}
+                            aria-invalid={Boolean(errors.from)}
+                            aria-describedby={errors.from ? "from-error" : undefined}
                             onChange={event => onPlanChange("from", event.target.value)} />
+                        {errors.from && <p className="field-error" id="from-error">{errors.from}</p>}
                     </div>
                     <div className="field">
                         <label className="field-label" htmlFor="to">To</label>
                         <input type="date" id="to" name="to" value={plan.to}
                             min={plan.from || rangeStart} max={rangeEnd}
+                            aria-invalid={Boolean(errors.to)}
+                            aria-describedby={errors.to ? "to-error" : undefined}
                             onChange={event => onPlanChange("to", event.target.value)} />
+                        {errors.to && <p className="field-error" id="to-error">{errors.to}</p>}
                     </div>
                 </div>
 
