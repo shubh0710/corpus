@@ -11,11 +11,12 @@ import { FUNDS } from "./lib/funds";
 import { fetchAllFundsData } from "./lib/fetchAllFunds";
 import { computeDateRange } from "./lib/computeDateRange";
 import { validateInputs } from "./lib/validateInputs";
+import { sampleResults } from "../fixtures/sample-results";
 import "./App.css";
 
 // App is the top of the page. Every card is its own component in
 // /components, and App's job is to put them together and to hold the
-// data that more than one card needs (the shares and the plan).
+// data that more than one card needs (the shares, the plan and the results).
 
 // The starting shares, built once as one object keyed by scheme code:
 // { 118778: 25, 118989: 15, ... }
@@ -91,6 +92,10 @@ function App() {
   // something is wrong, even on that very first click.
   const visibleErrors = showErrors ? errors : {};
 
+  // The numbers the two result cards will show. It starts as null (nothing yet),
+  // so the cards stay empty until someone runs the numbers successfully.
+  const [results, setResults] = useState(null);
+
   // Runs after the page first appears on screen. The empty [] at the very end
   // means "do this once, and not again on later re-draws". That's what we want
   // for downloading the fund data, because it only needs to happen once.
@@ -131,8 +136,9 @@ function App() {
     // If anything is wrong, stop here. The messages are already on screen.
     // Object.keys(errors) lists the broken fields, and an empty list means all is fine.
     if (Object.keys(errors).length > 0) return;
-    console.log("shares:", shares);
-    console.log("plan:", plan);
+    // Everything is fine, so save the made-up results. React sees the change
+    // and re-draws the page, handing the new results to the cards.
+    setResults(sampleResults);
   }
 
   return (
@@ -149,8 +155,8 @@ function App() {
 
         {/* Right column: the result cards */}
         <div className="col">
-          <MixVsBenchmark />
-          <EachFundOnItsOwn />
+          <MixVsBenchmark results={results} />
+          <EachFundOnItsOwn results={results} />
         </div>
       </main>
       <Footer />

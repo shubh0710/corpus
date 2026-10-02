@@ -1,0 +1,5 @@
+/* A negative figure, like a fall in value, shown in red.
+   Card 4's Worst fall column wears it. */
+.neg {
+    color: var(--color-negative);
+}

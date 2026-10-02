@@ -6,3 +6,62 @@
     gap: var(--space-2);
     margin-bottom: var(--space-5);
 }
+
+.result-headline {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-top: 3px;
+}
+
+.result-window {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* auto-fit means the browser fits as many 148px columns as
+   there is room for — three, then two, then one — so this
+   needs no media query of its own. */
+.verdicts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.verdict {
+    background-color: var(--color-accent-tint);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+}
+
+.verdict-value {
+    font-family: var(--font-numeric);
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-accent-strong);
+}
+
+.verdict-label {
+    font-size: 12px;
+    color: var(--color-accent-muted);
+    margin-top: 2px;
+}
+
+.mix {
+    color: var(--color-accent-strong);
+    font-weight: 500;
+}
+
+.bm {
+    color: var(--color-benchmark);
+}
+
+.stacked-label small {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    margin-top: 1px;
+}

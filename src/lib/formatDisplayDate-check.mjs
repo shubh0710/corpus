@@ -1,4 +1,4 @@
-import { formatDisplayDate } from "./formatDisplayDate.js";
+import { formatDisplayDate, formatMonthYear } from "./formatDisplayDate.js";
 
 const cases = [
     // the two dates we actually use
@@ -25,6 +25,24 @@ const cases = [
     ["2021-12-15", "15 Dec 2021"]
 ];
 
+// The same idea for formatMonthYear, which leaves the day out
+const monthYearCases = [
+    // the two dates we actually use (Card 3 shows "Sep 2019 — Aug 2026")
+    ["2019-09-11", "Sep 2019"],
+    ["2026-08-19", "Aug 2026"],
+
+    // the day never matters: the first and last day of a month give the same answer
+    ["2021-03-01", "Mar 2021"],
+    ["2021-03-31", "Mar 2021"],
+
+    // the first and last month of the year, where being one position off would show up
+    ["2020-01-05", "Jan 2020"],
+    ["2025-12-31", "Dec 2025"],
+
+    // a two-digit month
+    ["2021-10-15", "Oct 2021"]
+];
+
 let failures = 0;
 
 for (const [input, expected] of cases) {
@@ -32,6 +50,13 @@ for (const [input, expected] of cases) {
     const passed = actual === expected;
     if (!passed) failures++;
     console.log(input, "->", actual, passed ? "PASS" : `FAIL (expected ${expected})`);
+}
+
+for (const [input, expected] of monthYearCases) {
+    const actual = formatMonthYear(input);
+    const passed = actual === expected;
+    if (!passed) failures++;
+    console.log("formatMonthYear", input, "->", actual, passed ? "PASS" : `FAIL (expected ${expected})`);
 }
 
 console.log(failures === 0 ? "ALL PASS" : `${failures} FAILED`);

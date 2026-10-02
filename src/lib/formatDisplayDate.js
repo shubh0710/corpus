@@ -16,3 +16,15 @@ export function formatDisplayDate(isoDate) {
     // The year needs no change.
     return `${Number(day)} ${MONTH_NAMES[Number(month) - 1]} ${year}`;
 }
+
+// The same, without the day: "2019-09-11" becomes "Sep 2019". It is for places that only
+// need the month and year, like the window "Sep 2019 — Aug 2026" on Card 3.
+export function formatMonthYear(isoDate) {
+    // The day isn't needed, so we only name the first two pieces. split("-") still
+    // makes three, and the third is simply left unused.
+    const [year, month] = isoDate.split("-");
+
+    // Same trick as above: month "09" is the number 9, and the list starts counting
+    // at 0, so position 9 - 1 = 8 is "Sep".
+    return `${MONTH_NAMES[Number(month) - 1]} ${year}`;
+}
