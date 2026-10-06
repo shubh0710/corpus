@@ -76,8 +76,9 @@ export default function GrowthChart({ mixSeries, benchmarkSeries, worstFallDate 
 
                 <Tooltip content={<ChartTooltip />} />
 
-                <Line dataKey="benchmark" stroke="var(--color-benchmark)" strokeWidth={1.8} strokeDasharray="5 4" dot={false} isAnimationActive={false} />
-                <Line dataKey="mix" stroke="var(--color-brass)" strokeWidth={2.2} dot={false} isAnimationActive={false} />
+                {/* Round corners and ends, as in the original design. SVG's default is sharp points. */}
+                <Line dataKey="benchmark" stroke="var(--color-benchmark)" strokeWidth={1.8} strokeDasharray="5 4" dot={false} isAnimationActive={false} strokeLinejoin="round" strokeLinecap="round" />
+                <Line dataKey="mix" stroke="var(--color-brass)" strokeWidth={2.2} dot={false} isAnimationActive={false} strokeLinejoin="round" strokeLinecap="round" />
             </LineChart>
         </div>
     );

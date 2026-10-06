@@ -17,3 +17,15 @@ main {
     gap: var(--space-5);
     min-width: 0;
 }
+
+/* 900px and narrower: the two columns stop fitting, so the cards stack in one
+   column (minmax(0, 1fr) is one column as wide as the space, which a wide table
+   cannot stretch), with a smaller gap and less space above and below. */
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-5);
+        padding-top: var(--space-5);
+        padding-bottom: var(--space-7);
+    }
+}

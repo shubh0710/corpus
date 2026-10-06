@@ -88,3 +88,11 @@
 .note.is-error {
     color: var(--color-negative);
 }
+
+/* 400px and narrower: two fields side by side get too cramped, so each pair
+   (From / To, Amount / Rebalancing) stacks into one column. */
+@media (max-width: 400px) {
+    .field-row {
+        grid-template-columns: 1fr;
+    }
+}
