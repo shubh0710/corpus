@@ -1,4 +1,19 @@
 /* ==========================================================
+   BREAKPOINTS: 900 / 640 / 430 / 400 (px)
+   Keep these the same everywhere. A breakpoint is a screen width
+   where the layout changes. Each component's CSS file has its own
+   small @media blocks for its own rules, so the same numbers are
+   typed in several files. A CSS variable can't hold them: the
+   browser decides which @media rules apply before it works out
+   variables, so a variable doesn't exist yet at that point.
+     900  the two columns become one
+     640  the header gets slimmer
+     430  the header wraps onto two rows, less padding
+     400  the side-by-side form fields stack
+   ========================================================== */
+
+
+/* ==========================================================
    RESET
    ========================================================== */
 *,
@@ -295,4 +310,31 @@ thead th {
    would read as a row that isn't there */
 tbody tr:last-child td {
   border-bottom: none;
+}
+
+/* ==========================================================
+   SMALLER SCREENS
+   These sit at the end on purpose: when two rules are equally
+   strong, the one written later wins, so a phone rule must come
+   after the normal rule it changes.
+   ========================================================== */
+
+/* 900px and narrower: less space at the page's edges. Everything that uses
+   var(--page-pad) (header, main, footer) follows on its own. */
+@media (max-width: 900px) {
+  :root {
+    --page-pad: var(--space-5);
+  }
+}
+
+/* 430px and narrower: a little less again at the edges, and the cards keep
+   a little less space inside them. */
+@media (max-width: 430px) {
+  :root {
+    --page-pad: var(--space-4);
+  }
+
+  .panel {
+    padding: var(--space-5);
+  }
 }

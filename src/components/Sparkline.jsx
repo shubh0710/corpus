@@ -6,7 +6,7 @@ export default function Sparkline({ series }) {
 
             <YAxis hide domain={["dataMin", "dataMax"]} />
 
-            <Line dataKey="price" stroke="var(--color-brass)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+            <Line dataKey="price" stroke="var(--color-brass)" strokeWidth={1.5} dot={false} isAnimationActive={false} strokeLinejoin="round" />
         </LineChart>
     );
 }
