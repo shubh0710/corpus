@@ -1,4 +1,5 @@
 import { formatPercent } from "../lib/formatNumbers";
+import Sparkline from "./Sparkline";
 import "./EachFundOnItsOwn.css";
 
 export default function EachFundOnItsOwn({ results }) {
@@ -22,6 +23,7 @@ export default function EachFundOnItsOwn({ results }) {
                         <tr>
                             <th>Fund</th>
                             <th>Share</th>
+                            <th className="spark-cell">Shape</th>
                             <th>Return</th>
                             <th>Bumpiness</th>
                             <th>Worst fall</th>
@@ -38,6 +40,7 @@ export default function EachFundOnItsOwn({ results }) {
                                 <td>{fund.shortName}</td>
                                 {/* share is already a whole number like 25, so we only add the % sign */}
                                 <td className="num">{fund.share}%</td>
+                                <td className="spark-cell"><Sparkline series={fund.series} /></td>
                                 <td className="num">{formatPercent(fund.annualReturn)}</td>
                                 <td className="num">{formatPercent(fund.risk)}</td>
                                 {/* The stored worst fall is positive (0.342), so the minus in front turns it into a fall: "−34.2%" */}

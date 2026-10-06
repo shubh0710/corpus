@@ -1,4 +1,4 @@
-import { formatRupees, formatPercent } from "./formatNumbers.js";
+import { formatRupees, formatPercent, formatCompactRupees } from "./formatNumbers.js";
 
 // Each case is [the number we give it, the text we expect back]
 const rupeeCases = [
@@ -39,6 +39,24 @@ const percentDecimalsCases = [
     [0.184, 1, "18.4%"]   // saying 1 out loud is the same as the default
 ];
 
+// Each case is [the number we give it, the text we expect back].
+// The short form for the chart's axis: K = thousand, L = lakh (1,00,000), Cr = crore (1,00,00,000).
+const compactCases = [
+    [0, "₹0"],            // zero has no unit
+    [80000, "₹80K"],      // under a lakh: thousands
+    [160000, "₹1.6L"],    // a lakh or more: lakhs, one decimal
+    [250000, "₹2.5L"],
+    [300000, "₹3L"],      // a whole number shows no ".0"
+    [9000000, "₹90L"],    // still lakhs: it is under a crore
+    [12000000, "₹1.2Cr"], // a crore or more: crores
+
+    // Added after the sabotage test: the seven above never land exactly on a unit's edge,
+    // and none of them needs a second digit to be rounded away.
+    [100000, "₹1L"],      // exactly one lakh is a lakh, not "₹100K" (this is what >= is for)
+    [10000000, "₹1Cr"],   // exactly one crore is a crore, not "₹100L"
+    [1267000, "₹12.7L"]   // 12.67 is rounded to 12.7, not chopped to 12.6 and not left as 12.67
+];
+
 let failures = 0;
 
 // Prints one line, and counts a failure if the answer isn't what we expect
@@ -58,6 +76,10 @@ for (const [value, expected] of percentCases) {
 
 for (const [value, decimals, expected] of percentDecimalsCases) {
     report(`formatPercent ${value}, ${decimals} decimals`, formatPercent(value, decimals), expected);
+}
+
+for (const [amount, expected] of compactCases) {
+    report("formatCompactRupees " + amount, formatCompactRupees(amount), expected);
 }
 
 // The two minus signs look almost the same, so we check the character itself:
