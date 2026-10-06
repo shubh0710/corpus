@@ -1,6 +1,7 @@
 import "./MixVsBenchmark.css";
 import { formatRupees, formatPercent } from "../lib/formatNumbers";
 import { formatMonthYear } from "../lib/formatDisplayDate";
+import GrowthChart from "./GrowthChart";
 
 export default function MixVsBenchmark({ results }) {
 
@@ -81,7 +82,7 @@ export default function MixVsBenchmark({ results }) {
                 </div>
             </div>
 
-            {/* The chart goes here, in the next ticket */}
+            <GrowthChart mixSeries={mix.series} benchmarkSeries={benchmark.series} worstFallDate={benchmark.worstFallDate} />
 
             <div className="table-scroll">
                 <table>

@@ -1,0 +1,71 @@
+/* The sunken box the chart sits in. The legend is on top of it, the chart below. */
+.chart-wrap {
+    background-color: var(--color-sunken);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-4) var(--space-2);
+}
+
+/* The key above the chart: which line is which. flex-wrap lets the second
+   name drop to a new line when the card is too narrow for both. */
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
+}
+
+/* A short bar in the line's colour, like a small sample of the line itself */
+.legend-mark {
+    display: inline-block;
+    width: 15px;
+    height: 2.5px;
+    vertical-align: middle;
+    margin-right: 7px;
+    border-radius: 2px;
+}
+
+.mark-mix {
+    background-color: var(--color-brass);
+}
+
+.mark-bm {
+    background-color: var(--color-benchmark);
+}
+
+/* The rupee amounts down the left and the years along the bottom.
+   fill is the colour of text inside a chart (in an SVG, color does not do it). */
+.chart-label {
+    font-family: var(--font-numeric);
+    font-size: 11px;
+    fill: var(--color-text-muted);
+}
+
+/* The words beside the worst-fall marker, like "Mar 2020". Same look as the other
+   labels, but in the red used for falls. */
+.chart-marker-label {
+    font-family: var(--font-numeric);
+    font-size: 11px;
+    fill: var(--color-negative);
+}
+
+/* The box that follows the pointer. It wears the page's own tokens: the white
+   surface, the faint border, small corners and the same tiny shadow the other
+   raised things use. */
+.chart-tooltip {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lift);
+    padding: var(--space-2) var(--space-3);
+    font-size: 12px;
+}
+
+/* One line of the box: the name on the left, the amount pushed to the right end,
+   so the two amounts line up under each other. */
+.chart-tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+}

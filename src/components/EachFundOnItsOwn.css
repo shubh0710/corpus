@@ -3,3 +3,15 @@
 .neg {
     color: var(--color-negative);
 }
+
+/* The Shape column: a fixed width, just wider than the little chart (72px),
+   with its contents centred. */
+.spark-cell {
+    width: 86px;
+    text-align: center;
+}
+
+/* margin: 0 auto centres a block in the space around it */
+.spark-cell svg {
+    margin: 0 auto;
+}
