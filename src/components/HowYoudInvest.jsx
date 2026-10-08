@@ -24,7 +24,7 @@ const REBALANCING_OPTIONS = [
 //   range        - the first and last dates the fund data covers
 //                  (it's null until the data has finished loading)
 //   status       - "loading", "error" or "ready", so we know what to show
-export default function HowYoudInvest({ plan, onPlanChange, range, status, errors }) {
+export default function HowYoudInvest({ plan, onPlanChange, range, status, errors, onRetry }) {
     // SIP and lump sum each keep their own amount inside the plan. The amount
     // box shows and edits whichever one matches the mode that's picked.
     const amountKey = plan.style === "sip" ? "sipAmount" : "lumpsumAmount";
@@ -47,7 +47,7 @@ export default function HowYoudInvest({ plan, onPlanChange, range, status, error
     if (range) {
         noteText = `History starts ${formatDisplayDate(range.start)} — that's as far back as the data goes.`;
     } else if (status === "error") {
-        noteText = "Couldn't load the fund data. Check your connection and refresh the page.";
+        noteText = "Couldn't load the fund data. Check your connection and try again.";
         noteClass = "note is-error";
     }
 
@@ -138,6 +138,9 @@ export default function HowYoudInvest({ plan, onPlanChange, range, status, error
                     {status === "loading" ? "Loading fund data…" : "Run the numbers"}
                 </button>
                 <p className={noteClass}>{noteText}</p>
+                {status === "error" && (
+                    <button type="button" className="btn-ghost retry-btn" onClick={onRetry}>Try again</button>
+                )}
             </fieldset>
         </section>
     );
