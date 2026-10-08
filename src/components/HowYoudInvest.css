@@ -89,6 +89,11 @@
     color: var(--color-negative);
 }
 
+/* The "Try again" button under the error message: a little space above it */
+.retry-btn {
+    margin-top: var(--space-3);
+}
+
 /* 400px and narrower: two fields side by side get too cramped, so each pair
    (From / To, Amount / Rebalancing) stacks into one column. */
 @media (max-width: 400px) {

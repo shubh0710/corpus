@@ -1,0 +1,22 @@
+.glossary {
+    margin-top: var(--space-4);
+}
+
+/* A gap above every term except the first */
+.glossary div+div {
+    margin-top: var(--space-4);
+}
+
+/* The term: the strongest text in each pair */
+.glossary dt {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* What it means, just under it in the softer grey */
+.glossary dd {
+    margin-top: var(--space-1);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}

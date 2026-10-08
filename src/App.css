@@ -18,6 +18,28 @@ main {
     min-width: 0;
 }
 
+/* The wrapper for the How it works and Glossary cards, under main. It has the
+   same width limit, centring and side padding as main, so its edges line up
+   with the cards above. Two equal columns; the bottom padding keeps the same
+   distance to the footer that main used to have. */
+.info {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 var(--page-pad) var(--space-8);
+
+    display: grid;
+    grid-template-columns: 400px minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+}
+
+/* When a header link jumps to one of these cards, stop this far above it, so the
+   sticky header (about 61px tall) does not cover the card's title. Like parking
+   a little behind the line. The extra space-5 leaves a small gap under the header. */
+.info>.panel {
+    scroll-margin-top: calc(61px + var(--space-5));
+}
+
 /* 900px and narrower: the two columns stop fitting, so the cards stack in one
    column (minmax(0, 1fr) is one column as wide as the space, which a wide table
    cannot stretch), with a smaller gap and less space above and below. */
@@ -27,5 +49,20 @@ main {
         gap: var(--space-5);
         padding-top: var(--space-5);
         padding-bottom: var(--space-7);
+    }
+
+    /* the two reading cards stack too, with the same smaller gap */
+    .info {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+        padding-bottom: var(--space-7);
+    }
+}
+
+/* 430px and narrower: the header stops sticking to the top (Header.css), so a
+   jump has no header to clear. Just a small gap above the card. */
+@media (max-width: 430px) {
+    .info>.panel {
+        scroll-margin-top: var(--space-5);
     }
 }

@@ -37,6 +37,10 @@ export default function GrowthChart({ mixSeries, benchmarkSeries, worstFallDate 
     const step = Math.ceil(newYearDates.length / 4);
     const yearTicks = newYearDates.filter((date, i) => i % step === 0);
 
+    const firstRow = rows[0];
+    const lastRow = rows.at(-1);
+    const chartDescription = `From ${formatMonthYear(firstRow.date)} to ${formatMonthYear(lastRow.date)}, your mix ended at ${formatRupees(lastRow.mix)} and the Nifty 500 index fund at ${formatRupees(lastRow.benchmark)}.`;
+
     return (
         <div className="chart-wrap">
             <p className="chart-legend">
@@ -44,7 +48,8 @@ export default function GrowthChart({ mixSeries, benchmarkSeries, worstFallDate 
                 <span><i className="legend-mark mark-bm"></i>Nifty 500 index fund</span>
             </p>
 
-            <LineChart data={rows} responsive style={{ width: "100%", aspectRatio: 720 / 248, minHeight: 180 }}>
+            <LineChart data={rows} responsive style={{ width: "100%", aspectRatio: 720 / 248, minHeight: 180 }}
+                title="Your mix vs the Nifty 500 index fund" desc={chartDescription}>
 
                 <CartesianGrid vertical={false} stroke="var(--color-chart-grid)" />
 

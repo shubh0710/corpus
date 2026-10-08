@@ -6,6 +6,8 @@ import BuildYourMix from "./components/BuildYourMix";
 import HowYoudInvest from "./components/HowYoudInvest";
 import MixVsBenchmark from "./components/MixVsBenchmark";
 import EachFundOnItsOwn from "./components/EachFundOnItsOwn";
+import HowItWorks from "./components/HowItWorks";
+import Glossary from "./components/Glossary";
 import Footer from "./components/Footer";
 import { FUNDS } from "./lib/funds";
 import { fetchAllFundsData } from "./lib/fetchAllFunds";
@@ -71,6 +73,13 @@ function App() {
 
   const [status, setStatus] = useState("loading");
 
+  const [loadAttempt, setLoadAttempt] = useState(0);
+
+  function handleRetry() {
+    setStatus("loading");
+    setLoadAttempt(n => n + 1);
+  }
+
   // The first and last dates that all the funds share, like
   // { start: "2019-09-11", end: "2026-08-19" }. It's null (nothing yet)
   // until the data arrives, and the cards use it to limit the date boxes.
@@ -123,7 +132,7 @@ function App() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [loadAttempt]);
 
   // Runs when the form is submitted, which happens when someone clicks
   // "Run the numbers" or presses Enter inside a box.
@@ -150,7 +159,7 @@ function App() {
           {/* Pass the shares down, plus the function a row calls to change one */}
           <BuildYourMix shares={shares} onShareChange={handleShareChange} errors={visibleErrors} />
           {/* Give the "How you'd invest" card the current plan so its boxes can show it, plus the function they call to change it */}
-          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} range={range} status={status} errors={visibleErrors} />
+          <HowYoudInvest plan={plan} onPlanChange={handlePlanChange} range={range} status={status} errors={visibleErrors} onRetry={handleRetry} />
         </form>
 
         {/* Right column: the result cards */}
@@ -159,6 +168,12 @@ function App() {
           <EachFundOnItsOwn results={results} />
         </div>
       </main>
+      {/* Two reading cards under the tool: the bookmarks the header links jump to.
+          Side by side on a wide screen, one under the other on a narrow one (App.css). */}
+      <div className="info">
+        <HowItWorks />
+        <Glossary />
+      </div>
       <Footer />
     </>
   );

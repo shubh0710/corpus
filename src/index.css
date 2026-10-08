@@ -174,6 +174,24 @@ input.num {
   margin: var(--space-1) 0 var(--space-5);
 }
 
+/* The quiet outlined button: the header's "Save this mix" and Card 2's
+   "Try again". It lives here because two components use it. */
+.btn-ghost {
+  padding: 7px var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  white-space: nowrap;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-text-secondary);
+  box-shadow: var(--shadow-lift);
+}
+
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
@@ -327,6 +345,14 @@ tbody tr:last-child td {
   }
 }
 
+/* 640px and narrower: the outlined buttons (the header's "Save this mix" and
+   Card 2's "Try again") get more padding, a bigger area for a fingertip to tap. */
+@media (max-width: 640px) {
+  .btn-ghost {
+    padding: 11px var(--space-3);
+  }
+}
+
 /* 430px and narrower: a little less again at the edges, and the cards keep
    a little less space inside them. */
 @media (max-width: 430px) {
@@ -336,5 +362,14 @@ tbody tr:last-child td {
 
   .panel {
     padding: var(--space-5);
+  }
+}
+
+/* Glide to a bookmark instead of jumping, but only for people who have not
+   asked their device to reduce motion. Some people get dizzy from movement on
+   screen; this setting is how they say so, and we respect it. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
