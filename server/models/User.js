@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
         // changing capitals.
         email: { type: String, required: true, unique: true, lowercase: true, trim: true },
 
-        // Never the password itself: a scrambled version of it (hashing comes in a later step)
+        // Never the password itself: a scrambled version of it, made with bcrypt at sign-up
         passwordHash: { type: String, required: true }
     },
     // Adds createdAt and updatedAt, filled in automatically
