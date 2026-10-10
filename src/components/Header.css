@@ -15,7 +15,9 @@ header {
 }
 
 /* Inner box: capped width, centred, holds the content in one row.
-   space-between pushes the wordmark left and the nav/button right. */
+   space-between pushes the wordmark left and the nav/button right.
+   The gap is also the space between the nav/button group and the account spot,
+   so it matches the space between the items inside that group (space-5). */
 .header-inner {
     max-width: var(--page-max);
     margin: 0 auto;
@@ -25,7 +27,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-5);
 }
 
 .wordmark {
@@ -40,11 +42,14 @@ header {
     color: var(--color-brass);
 }
 
-/* nav links + button sit side by side */
+/* nav links + button sit side by side. margin-left: auto soaks up all the free
+   space to its left, which pushes this group, and the account spot after it, to
+   the right end, next to each other. */
 .header-right {
     display: flex;
     align-items: center;
     gap: var(--space-5);
+    margin-left: auto;
 }
 
 header nav {
@@ -62,11 +67,43 @@ header nav a:hover {
     color: var(--color-text-primary);
 }
 
+/* The account spot: "Log in", or the email and "Log out", side by side */
+.account {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+/* The email is information, not a link, so it's quiet, like the nav links.
+   A very long email is capped and cut off with "…" so it can't push the header
+   wider. text-overflow: ellipsis only works together with overflow: hidden (hide
+   what doesn't fit) and white-space: nowrap (keep it on one line, so there's
+   something to cut off instead of wrapping). */
+.account-email {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 900px and narrower: the email no longer fits next to everything else without
+   making the header wider or taller, so only "Log out" shows (about the size of
+   "Log in", so the header looks the same logged in or out). */
+@media (max-width: 900px) {
+    .account-email {
+        display: none;
+    }
+}
+
 /* 640px and narrower: a slimmer header. It sticks to the top, so its height is
    taken from the reading area all the time; worth keeping lean on a phone.
    The links get 11px of padding above and below, which grows the area a finger
    can tap to about 44px tall, and then a margin of -11px pulls the layout back
-   in by the same amount, so the row itself does not get any taller. */
+   in by the same amount, so the row itself does not get any taller.
+   (The "Save this mix" button's bigger tap area is in index.css, with the rest
+   of .btn-ghost, because Card 2's "Try again" button wears it too.) */
 @media (max-width: 640px) {
     .header-inner {
         padding-top: var(--space-2);
@@ -85,12 +122,23 @@ header nav a:hover {
     }
 }
 
-/* 430px and narrower: the wordmark, both links and the button no longer fit on
+/* 480px and narrower: the wordmark, both links and the buttons no longer fit on
    one row, so the header wraps onto two (flex-wrap) instead of hiding anything.
+   (480, not the page's usual 430: the account button needs about 466px to share
+   one row, so the phone layout starts a little earlier, with room to spare for
+   fonts that draw a bit wider.)
    The second row (the links and the button) takes the full width and spreads
    out. Two rows would take a big bite out of a small screen, so the header also
-   stops sticking to the top (static) and simply scrolls away. */
-@media (max-width: 430px) {
+   stops sticking to the top (static) and simply scrolls away.
+   The account button moves up to the first row, next to the wordmark, where
+   there's room: order changes the order things are SHOWN in without moving them
+   in the HTML. Everything starts at order 0, so order: 1 sends the links and
+   "Save this mix" after the account spot, onto their own full-width second row.
+   margin-left: auto pushes the account button to the right end of the first row.
+   On that row the button is slimmer (3px above and below its text) so it's no
+   taller than the wordmark and the header keeps its original height. The cost:
+   a smaller area to tap than the other buttons. */
+@media (max-width: 480px) {
     header {
         position: static;
     }
@@ -106,5 +154,15 @@ header nav a:hover {
     .header-right {
         width: 100%;
         justify-content: space-between;
+        order: 1;
+    }
+
+    .account {
+        margin-left: auto;
+    }
+
+    .account .btn-ghost {
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 }
