@@ -59,9 +59,9 @@ main {
     }
 }
 
-/* 430px and narrower: the header stops sticking to the top (Header.css), so a
+/* 480px and narrower: the header stops sticking to the top (Header.css), so a
    jump has no header to clear. Just a small gap above the card. */
-@media (max-width: 430px) {
+@media (max-width: 480px) {
     .info>.panel {
         scroll-margin-top: var(--space-5);
     }

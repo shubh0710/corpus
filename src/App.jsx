@@ -9,10 +9,12 @@ import EachFundOnItsOwn from "./components/EachFundOnItsOwn";
 import HowItWorks from "./components/HowItWorks";
 import Glossary from "./components/Glossary";
 import Footer from "./components/Footer";
+import AuthDialog from "./components/AuthDialog";
 import { FUNDS } from "./lib/funds";
 import { fetchAllFundsData } from "./lib/fetchAllFunds";
 import { computeDateRange } from "./lib/computeDateRange";
 import { validateInputs } from "./lib/validateInputs";
+import { getMe } from "./lib/authApi";
 import { sampleResults } from "../fixtures/sample-results";
 import "./App.css";
 
@@ -41,6 +43,11 @@ const initialPlan = {
   from: "",
   to: ""
 };
+
+// The name of the page in the browser's notebook (localStorage) where the wristband
+// (the log-in token) is kept. Written once here so every read, save and remove uses
+// exactly the same name.
+const TOKEN_KEY = "corpus.token";
 
 function App() {
   // The one place that remembers every fund's share. It lives here in App
@@ -105,6 +112,73 @@ function App() {
   // so the cards stay empty until someone runs the numbers successfully.
   const [results, setResults] = useState(null);
 
+  // Who is logged in: null for nobody, or { id, email }
+  const [user, setUser] = useState(null);
+
+  // True while the page is still asking the server "is the saved wristband still good?".
+  // It starts true so the header shows nothing in the account spot until we know,
+  // instead of flashing "Log in" for a moment at someone who is logged in.
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  // Runs once, when the page first appears (the empty [] means nothing to watch).
+  // localStorage is a small notebook the browser keeps for this site: it survives a
+  // refresh and closing the tab. If a wristband is saved there, ask the server (/me)
+  // whether it still works. Yes: remember who it is. No (expired, junk, or the server
+  // couldn't be reached): throw the wristband away, so the person simply logs in again.
+  // In development React runs this twice on purpose (StrictMode) to catch bugs, so /me
+  // is asked twice; the ignore flag makes the first, cancelled run's answer harmless.
+  useEffect(() => {
+    let ignore = false;
+
+    async function checkSession() {
+      const token = localStorage.getItem(TOKEN_KEY);
+      // getItem gives null when nothing is saved under that name: nothing to check
+      if (token === null) {
+        setCheckingSession(false);
+        return;
+      }
+
+      try {
+        const me = await getMe(token);
+        if (ignore) return;
+        setUser(me);
+      } catch {
+        if (ignore) return;
+        localStorage.removeItem(TOKEN_KEY);
+      }
+      // Either way, the check is over
+      setCheckingSession(false);
+    }
+    checkSession();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  // The log-in pop-up (next step) calls this when the server says yes. It gets the
+  // server's answer, { token, user }: save the wristband in the notebook, then remember
+  // who it is. `session` is that whole answer (a different name from the `user` state).
+  function handleSignedIn(session) {
+    localStorage.setItem(TOKEN_KEY, session.token);
+    setUser(session.user);
+  }
+
+  // The header's "Log out" button: throw the wristband away and forget who it was.
+  // The server keeps no list of who's logged in, so there's nothing to tell it.
+  function handleLogOut() {
+    localStorage.removeItem(TOKEN_KEY);
+    setUser(null);
+  }
+
+  // Whether the log-in pop-up should be open
+  const [authOpen, setAuthOpen] = useState(false);
+
+  // The header's "Log in" button opens the pop-up
+  function handleLogInClick() {
+    setAuthOpen(true);
+  }
+
   // Runs after the page first appears on screen. The empty [] at the very end
   // means "do this once, and not again on later re-draws". That's what we want
   // for downloading the fund data, because it only needs to happen once.
@@ -152,7 +226,9 @@ function App() {
 
   return (
     <>
-      <Header />
+      {/* The header shows the account spot: nothing while checking, the email and
+          "Log out" when logged in, "Log in" when not */}
+      <Header user={user} checkingSession={checkingSession} onLogInClick={handleLogInClick} onLogOut={handleLogOut} />
       <main>
         {/* Left column: the form cards. onSubmit is what catches the button click */}
         <form className="col" onSubmit={handleSubmit} noValidate>
@@ -175,6 +251,11 @@ function App() {
         <Glossary />
       </div>
       <Footer />
+      {/* The log-in pop-up. It sits on top of everything when open (the browser draws an
+          open dialog above the page), so where it's written here doesn't matter.
+          onClose runs however it closes (Esc, Close, or after logging in), so App always
+          knows it's shut and "Log in" can open it again. */}
+      <AuthDialog isOpen={authOpen} onClose={() => setAuthOpen(false)} onSignedIn={handleSignedIn} />
     </>
   );
 }

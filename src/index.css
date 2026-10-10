@@ -1,5 +1,5 @@
 /* ==========================================================
-   BREAKPOINTS: 900 / 640 / 430 / 400 (px)
+   BREAKPOINTS: 900 / 640 / 480 / 430 / 400 (px)
    Keep these the same everywhere. A breakpoint is a screen width
    where the layout changes. Each component's CSS file has its own
    small @media blocks for its own rules, so the same numbers are
@@ -8,10 +8,10 @@
    variables, so a variable doesn't exist yet at that point.
      900  the two columns become one
      640  the header gets slimmer
-     430  the header wraps onto two rows, less padding
+     480  (header only) the header wraps onto two rows and stops sticking
+     430  less padding
      400  the side-by-side form fields stack
    ========================================================== */
-
 
 /* ==========================================================
    RESET
@@ -174,8 +174,9 @@ input.num {
   margin: var(--space-1) 0 var(--space-5);
 }
 
-/* The quiet outlined button: the header's "Save this mix" and Card 2's
-   "Try again". It lives here because two components use it. */
+/* The quiet outlined button: the header's "Save this mix", "Log in" and
+   "Log out", Card 2's "Try again" and the pop-up's "Close". It lives here
+   because several components use it. */
 .btn-ghost {
   padding: 7px var(--space-4);
   font-size: 13px;
@@ -192,6 +193,28 @@ input.num {
   box-shadow: var(--shadow-lift);
 }
 
+/* The solid dark button: Card 2's "Run the numbers" and the log-in pop-up's
+   submit button. It lives here because two components use it. */
+.btn-primary {
+  width: 100%;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-text-primary);
+  color: var(--color-surface);
+  transition: opacity 0.15s;
+}
+
+.btn-primary:hover {
+  opacity: 0.87;
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
@@ -200,8 +223,23 @@ input.num {
   color: var(--color-text-muted);
 }
 
+/* A label and its box, as one group: Card 2's boxes and the log-in pop-up's.
+   min-width: 0 lets a field shrink inside a grid instead of pushing it wider. */
+.field {
+  min-width: 0;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 5px;
+}
+
 input[type="number"],
 input[type="date"],
+input[type="email"],
+input[type="password"],
 select {
   width: 100%;
   padding: var(--space-2) var(--space-3);
@@ -276,15 +314,21 @@ select:focus {
   background-color: var(--fund-gold);
 }
 
-/* ==========================================================
-   TABLES — shared by cards 3 and 4
+/* ==============================================================
+   TABLES — shared by Card 3 and Card 4
 
    Numbers never wrap. Only the first column may.
-   ========================================================== */
+   ============================================================== */
+
+/* The box around a table. If the table is wider than the card (on a
+   narrow phone), the table scrolls sideways inside this box instead of
+   pushing the whole page wider. */
 .table-scroll {
   overflow-x: auto;
 }
 
+/* border-collapse: collapse joins the lines between cells into one line,
+   instead of drawing a separate box around every cell. */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -292,6 +336,8 @@ table {
   font-size: 13px;
 }
 
+/* Every cell: text on the right, a faint line under each row, and
+   nowrap so a number never breaks onto two lines. */
 th,
 td {
   padding: 10px var(--space-2);
@@ -300,8 +346,9 @@ td {
   white-space: nowrap;
 }
 
-/* zero padding on the outer edges so the table lines up
-   flush with the card's own padding */
+/* The first column is the exception: its text sits on the left and may
+   wrap. :first-child means "the first cell in its row". Zero padding on
+   the outer edges so the table lines up flush with the card's own padding. */
 th:first-child,
 td:first-child {
   text-align: left;
@@ -314,6 +361,7 @@ td:last-child {
   padding-right: 0;
 }
 
+/* The column names: small spaced-out capitals, with a stronger line under them. */
 thead th {
   font-size: 11px;
   font-weight: 600;

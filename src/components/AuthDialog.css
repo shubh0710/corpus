@@ -1,0 +1,58 @@
+/* The pop-up itself. A <dialog> arrives with the browser's own border, padding and
+   colours; these replace them with the same look as the cards (.panel).
+   width: the smaller of 400px and the screen minus the page's usual side space, so it
+   also fits a 320px phone. margin: auto (the browser's own) keeps it centred. */
+.auth-dialog {
+    width: min(400px, calc(100% - 2 * var(--page-pad)));
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    margin: auto;
+}
+
+/* The page behind the open pop-up, dimmed. A plain colour rather than a var(): older
+   browsers don't let ::backdrop see the page's variables. */
+.auth-dialog::backdrop {
+    background-color: rgba(25, 26, 28, 0.45);
+}
+
+/* The title on the left, "Close" on the right */
+.auth-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+/* The boxes, the message and the button, one under the other with even gaps */
+.auth-form {
+    display: grid;
+    gap: var(--space-4);
+}
+
+/* "At least 8 characters." under the password box: small and quiet, close to its box */
+.auth-hint {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+    line-height: 1.5;
+}
+
+/* "No account yet? Create one" under the form */
+.auth-switch {
+    margin-top: var(--space-4);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    text-align: center;
+}
+
+/* The "Create one" / "Log in" part: a button that looks like a link (underlined) */
+.auth-switch-btn {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
