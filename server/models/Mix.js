@@ -20,7 +20,8 @@ const shareSchema = new mongoose.Schema(
 const mixSchema = new mongoose.Schema(
     {
         name: { type: String, required: true, trim: true },
-        shares: [shareSchema]
+        shares: [shareSchema],
+        owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
     },
     { timestamps: true }
 );

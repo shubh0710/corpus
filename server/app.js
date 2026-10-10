@@ -1,9 +1,10 @@
 import express from "express";
 import { mixesRouter } from "./routes/mixes.js";
+import { authRouter } from "./routes/auth.js";
 
 // The server application. This file only builds it and says which doors it has;
-// it does not open it. index.js opens it for real (on port 3000), and
-// health-check.mjs opens it on a spare port for the check.
+// it does not open it. index.js opens it for real (on port 3000), and the check
+// files open it on a spare port.
 // `export const` is a named export, so other files bring it in with { app }.
 export const app = express();
 
@@ -22,3 +23,6 @@ app.get("/api/health", (req, res) => {
 
 // The saved-mix doors, all under one sign: /api/mixes (see routes/mixes.js)
 app.use("/api/mixes", mixesRouter);
+
+// The sign-up and log-in doors, under /api/auth (see routes/auth.js)
+app.use("/api/auth", authRouter);

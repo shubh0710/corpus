@@ -20,13 +20,17 @@ const shares = [
     { schemeCode: 140088, share: 20 }
 ];
 
+// Every mix needs an owner: the ID of the user it belongs to. new mongoose.Types.ObjectId()
+// makes up a fresh, correctly shaped ID; no real user is needed for this check.
+const owner = new mongoose.Types.ObjectId();
+
 // The practice cabinet: dbName "corpus-test" overrides the "corpus" in the address
 await mongoose.connect(process.env.MONGODB_URI, { dbName: "corpus-test" });
 
 // try / finally: whatever happens, finally hangs up on the database, so the check ends by itself
 try {
     // Save a mix, then read it back by its _id (the ID the database gave it)
-    const saved = await Mix.create({ name: "Check mix", shares });
+    const saved = await Mix.create({ name: "Check mix", shares, owner });
     const found = await Mix.findById(saved._id);
     report("name", found.name, "Check mix");
     // toObject turns the Mongoose document into a plain object; JSON.stringify turns both
@@ -35,9 +39,10 @@ try {
 
     // A mix with no name must be refused. validate() checks the rules without saving,
     // so even if the rule is broken, nothing junk ends up in the database.
+    // It has an owner, so the missing name is the only thing that can make it fail.
     let errorName = "no error";
     try {
-        await new Mix({ shares }).validate();
+        await new Mix({ shares, owner }).validate();
     } catch (error) {
         errorName = error.name;
     }
