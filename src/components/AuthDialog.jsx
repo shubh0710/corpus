@@ -16,12 +16,14 @@ export default function AuthDialog({ isOpen, onClose, onSignedIn }) {
     const [error, setError] = useState("");
     // True while waiting for the server, so the button can't be pressed twice
     const [busy, setBusy] = useState(false);
+    // Whether the password shows as letters (true) or dots (false). Sign-up has no
+    // "type it again" box, so this lets people check what they typed.
+    const [showPassword, setShowPassword] = useState(false);
 
     // A ref is a sticky note pointing at the real <dialog> on the page. React draws the
     // dialog, but opening and closing it are things only the element itself can do
     // (showModal and close), so we need a handle on it.
     const dialogRef = useRef(null);
-
     // A second sticky note, on the email box, so we can put the cursor there
     const emailRef = useRef(null);
 
@@ -46,12 +48,14 @@ export default function AuthDialog({ isOpen, onClose, onSignedIn }) {
     // The dialog's close event fires however it closes: Esc (which the browser handles
     // on its own, without asking React), the Close button, or after a success. So this is
     // the one place that tidies up: forget the password, so it isn't still sitting in the
-    // box on a shared computer, and the old message, so the pop-up doesn't reopen with
-    // "Wrong email or password." before anything is typed. Then tell App, so isOpen goes
-    // back to false. Without that, after Esc App would still think it's open, and "Log in"
-    // would do nothing next time.
+    // box on a shared computer; hide it again, so the next person to open the pop-up
+    // doesn't see their own typing in plain letters; and clear the old message, so the
+    // pop-up doesn't reopen with "Wrong email or password." before anything is typed.
+    // Then tell App, so isOpen goes back to false. Without that, after Esc App would still
+    // think it's open, and "Log in" would do nothing next time.
     function handleClose() {
         setPassword("");
+        setShowPassword(false);
         setError("");
         onClose();
     }
@@ -112,14 +116,33 @@ export default function AuthDialog({ isOpen, onClose, onSignedIn }) {
 
                 <div className="field">
                     <label className="field-label" htmlFor="auth-password">Password</label>
-                    {/* Tells password managers what this is: "current-password" means
-                        "fill in the saved one", "new-password" means "offer to save this".
-                        When signing up, aria-describedby links the hint below to the box,
-                        so a screen reader reads it out with the box. */}
-                    <input type="password" id="auth-password" name="password"
-                        autoComplete={isLogin ? "current-password" : "new-password"}
-                        aria-describedby={isLogin ? undefined : "auth-password-hint"}
-                        value={password} onChange={event => setPassword(event.target.value)} />
+                    {/* The box and its Show/Hide button share a wrapper, so the button can
+                        sit inside the box's right end (AuthDialog.css) */}
+                    <div className="password-box">
+                        {/* type="password" is the only reason the browser shows dots; the same
+                            box with type="text" shows the letters, so the type follows the state.
+                            autoComplete tells password managers what this is: "current-password"
+                            means "fill in the saved one", "new-password" means "offer to save this".
+                            When signing up, aria-describedby links the hint below to the box,
+                            so a screen reader reads it out with the box.
+                            Phone keyboards "help" in text boxes: a capital first letter,
+                            autocorrect, a spell-check underline. Once the password is shown that
+                            would change what's typed, so all three are switched off. */}
+                        <input type={showPassword ? "text" : "password"} id="auth-password" name="password"
+                            autoComplete={isLogin ? "current-password" : "new-password"}
+                            aria-describedby={isLogin ? undefined : "auth-password-hint"}
+                            autoCapitalize="none" autoCorrect="off" spellCheck={false}
+                            value={password} onChange={event => setPassword(event.target.value)} />
+                        {/* type="button" so a click doesn't send the form. A screen reader hears
+                            the full aria-label ("Show password" / "Hide password"); the screen
+                            shows the short word. The name itself changes, so no aria-pressed:
+                            both together would read "Hide password, pressed". */}
+                        <button type="button" className="password-toggle"
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                            onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? "Hide" : "Show"}
+                        </button>
+                    </div>
                     {!isLogin && <p className="auth-hint" id="auth-password-hint">At least 8 characters.</p>}
                 </div>
 
