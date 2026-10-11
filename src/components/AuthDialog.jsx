@@ -95,8 +95,8 @@ export default function AuthDialog({ isOpen, onClose, onSignedIn }) {
     return (
         // aria-labelledby gives the pop-up its name (the title), which a screen reader
         // reads out when it opens
-        <dialog ref={dialogRef} className="auth-dialog" aria-labelledby="auth-title" onClose={handleClose}>
-            <div className="auth-head">
+        <dialog ref={dialogRef} className="dialog" aria-labelledby="auth-title" onClose={handleClose}>
+            <div className="dialog-head">
                 <h2 className="panel-title" id="auth-title">{isLogin ? "Log in" : "Create account"}</h2>
                 <button type="button" className="btn-ghost" onClick={() => dialogRef.current.close()}>Close</button>
             </div>

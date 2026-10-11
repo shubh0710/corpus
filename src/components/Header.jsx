@@ -5,7 +5,7 @@ import "./Header.css";
 //   checkingSession - true while App is still asking the server about a saved wristband
 //   onLogInClick    - what the "Log in" button calls
 //   onLogOut        - what the "Log out" button calls
-export default function Header({ user, checkingSession, onLogInClick, onLogOut }) {
+export default function Header({ user, checkingSession, onLogInClick, onLogOut, onSaveClick }) {
     // What goes in the account spot. While still checking: nothing (null draws nothing),
     // so "Log in" never flashes up at someone who is actually logged in.
     // Logged in: the email as plain text (it isn't something to click), then "Log out".
@@ -40,7 +40,7 @@ export default function Header({ user, checkingSession, onLogInClick, onLogOut }
                         <a href="#how-it-works">How it works</a>
                         <a href="#glossary">Glossary</a>
                     </nav>
-                    <button type="button" className="btn-ghost">Save this mix</button>
+                    <button type="button" className="btn-ghost" onClick={onSaveClick}>Save this mix</button>
                 </div>
 
                 {/* The account spot is its own item here, not inside .header-right, so on
