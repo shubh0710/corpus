@@ -1,0 +1,10 @@
+{
+  "services": {
+    "app": { "root": ".", "framework": "vite" },
+    "server": { "root": "server", "framework": "express", "entrypoint": "index.js" }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "server" } },
+    { "source": "/(.*)", "destination": { "service": "app" } }
+  ]
+}
