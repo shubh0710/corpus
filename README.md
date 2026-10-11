@@ -2,6 +2,8 @@
 
 **Backtest a mix of Indian mutual funds against the market.** Choose how much of your money goes into each of six funds, invest it as a monthly SIP or as one lump sum, and see how that mix would actually have done since September 2019, compared with simply buying a Nifty 500 index fund.
 
+**Live demo:** https://corpus-khaki.vercel.app
+
 ## Features
 
 - **Build a mix.** Give each of six funds a share (equity, debt and gold). A colour ribbon shows the split, and the page checks that the shares add up to 100%.
