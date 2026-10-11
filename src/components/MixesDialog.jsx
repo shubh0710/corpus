@@ -142,7 +142,7 @@ export default function MixesDialog({ token, shares, onLoad, onClose }) {
     return (
         <dialog ref={dialogRef} className="dialog" aria-labelledby="mixes-title" onClose={onClose}>
             <div className="dialog-head">
-                <h2 className="panel-title" id="mixes-title">Your mixes</h2>
+                <h2 className="panel-title" id="mixes-title">My mixes</h2>
                 <button type="button" className="btn-ghost" onClick={() => dialogRef.current.close()}>Close</button>
             </div>
 

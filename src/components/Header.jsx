@@ -5,6 +5,9 @@ import "./Header.css";
 //   checkingSession - true while App is still asking the server about a saved wristband
 //   onLogInClick    - what the "Log in" button calls
 //   onLogOut        - what the "Log out" button calls
+//   onSaveClick     - what the mixes button calls. Logged out it says "Save this mix" (and
+//                     App opens the log-in pop-up); logged in it says "My mixes" (and App
+//                     opens the pop-up where you save, load and delete your mixes)
 export default function Header({ user, checkingSession, onLogInClick, onLogOut, onSaveClick }) {
     // What goes in the account spot. While still checking: nothing (null draws nothing),
     // so "Log in" never flashes up at someone who is actually logged in.
@@ -40,7 +43,11 @@ export default function Header({ user, checkingSession, onLogInClick, onLogOut, 
                         <a href="#how-it-works">How it works</a>
                         <a href="#glossary">Glossary</a>
                     </nav>
-                    <button type="button" className="btn-ghost" onClick={onSaveClick}>Save this mix</button>
+                    {/* Same button, same click, honest words: once you're logged in it's
+                        where you find your saved mixes, not only where you save one */}
+                    <button type="button" className="btn-ghost" onClick={onSaveClick}>
+                        {user ? "My mixes" : "Save this mix"}
+                    </button>
                 </div>
 
                 {/* The account spot is its own item here, not inside .header-right, so on
