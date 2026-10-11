@@ -7,6 +7,45 @@
     gap: var(--space-4);
 }
 
+/* The password box and its Show/Hide button. position: relative makes this wrapper
+   the frame the button is placed against (position: absolute, below). */
+.password-box {
+    position: relative;
+}
+
+/* Room on the right for the button, so a long password stops before it instead of
+   running underneath. This is as strong as the shared input rule in index.css
+   (one class + one tag here, one tag + one [type] there); this file is loaded later,
+   so this padding wins. */
+.password-box input {
+    padding-right: 64px;
+}
+
+/* The Show/Hide button, inside the box at its right end. top: 50% puts its top edge
+   at the box's middle, and translateY(-50%) lifts it by half its own height, so its
+   middle sits on the box's middle: vertically centred. Small and quiet, so it doesn't
+   compete with the password itself. */
+.password-toggle {
+    position: absolute;
+    right: var(--space-1);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: var(--space-1) var(--space-2);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.15s;
+}
+
+.password-toggle:hover {
+    background-color: var(--color-sunken);
+}
+
+.password-toggle:focus-visible {
+    outline-offset: 0;
+}
+
 /* "At least 8 characters." under the password box: small and quiet, close to its box */
 .auth-hint {
     font-size: 12px;
