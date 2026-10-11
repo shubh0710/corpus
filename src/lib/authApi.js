@@ -2,30 +2,9 @@
 // and never build requests themselves (the same split as routes and controllers on the server).
 // The addresses are relative (/api/...): the page asks its own door, and in development
 // Vite's proxy forwards them to the Express server (see vite.config.js).
-
-// What all three do: knock, read the JSON answer, and throw if the answer isn't OK.
-// response.ok is true for statuses 200-299. For 400, 401 or 409 the server's answer is
-// { error: "a friendly message" }, so throwing new Error(answer.error) lets a component
-// simply show error.message.
-// Two steps can fail before there's any answer to read: fetch itself (no connection), or
-// json() (the answer isn't JSON; with the server stopped, Vite's proxy sends an empty
-// body). Either way the person can't do anything with the technical message, so the
-// try / catch swaps it for one they can act on. let declares the two names before the
-// try, so they still exist after it.
-async function ask(url, options) {
-    let response;
-    let answer;
-    try {
-        response = await fetch(url, options);
-        answer = await response.json();
-    } catch {
-        throw new Error("Couldn't reach the server. Please try again.");
-    }
-    if (!response.ok) {
-        throw new Error(answer.error);
-    }
-    return answer;
-}
+// All three go through ask() (in api.js): knock, read the JSON answer, throw the
+// server's message if it says no, or a friendly one if it can't be reached.
+import { ask } from "./api.js";
 
 // Sign-up and log-in send the same package, { email, password } as JSON, to different doors
 function sendCredentials(url, email, password) {

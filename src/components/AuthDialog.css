@@ -1,31 +1,5 @@
-/* The pop-up itself. A <dialog> arrives with the browser's own border, padding and
-   colours; these replace them with the same look as the cards (.panel).
-   width: the smaller of 400px and the screen minus the page's usual side space, so it
-   also fits a 320px phone. margin: auto (the browser's own) keeps it centred. */
-.auth-dialog {
-    width: min(400px, calc(100% - 2 * var(--page-pad)));
-    padding: var(--space-6);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background-color: var(--color-surface);
-    color: var(--color-text-primary);
-    margin: auto;
-}
-
-/* The page behind the open pop-up, dimmed. A plain colour rather than a var(): older
-   browsers don't let ::backdrop see the page's variables. */
-.auth-dialog::backdrop {
-    background-color: rgba(25, 26, 28, 0.45);
-}
-
-/* The title on the left, "Close" on the right */
-.auth-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    margin-bottom: var(--space-5);
-}
+/* The log-in pop-up's own parts. The pop-up box itself (.dialog, .dialog-head) is
+   shared with the other pop-ups, so it lives in index.css. */
 
 /* The boxes, the message and the button, one under the other with even gaps */
 .auth-form {

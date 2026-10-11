@@ -10,6 +10,7 @@ import HowItWorks from "./components/HowItWorks";
 import Glossary from "./components/Glossary";
 import Footer from "./components/Footer";
 import AuthDialog from "./components/AuthDialog";
+import MixesDialog from "./components/MixesDialog";
 import { FUNDS } from "./lib/funds";
 import { fetchAllFundsData } from "./lib/fetchAllFunds";
 import { computeDateRange } from "./lib/computeDateRange";
@@ -179,6 +180,25 @@ function App() {
     setAuthOpen(true);
   }
 
+  // Whether the "Your mixes" pop-up is open
+  const [mixesOpen, setMixesOpen] = useState(false);
+
+  // The header's "Save this mix" button. Saving needs a wristband, so: logged in, open
+  // "Your mixes"; logged out, open the log-in pop-up first.
+  function handleSaveClick() {
+    if (user) {
+      setMixesOpen(true);
+    } else {
+      setAuthOpen(true);
+    }
+  }
+
+  // "Load" in the mixes pop-up: the saved shares replace the current ones, and the six
+  // boxes in Card 1 follow. Results already on screen stay until the next "Run the numbers".
+  function handleLoadMix(loadedShares) {
+    setShares(loadedShares);
+  }
+
   // Runs after the page first appears on screen. The empty [] at the very end
   // means "do this once, and not again on later re-draws". That's what we want
   // for downloading the fund data, because it only needs to happen once.
@@ -228,7 +248,7 @@ function App() {
     <>
       {/* The header shows the account spot: nothing while checking, the email and
           "Log out" when logged in, "Log in" when not */}
-      <Header user={user} checkingSession={checkingSession} onLogInClick={handleLogInClick} onLogOut={handleLogOut} />
+      <Header user={user} checkingSession={checkingSession} onLogInClick={handleLogInClick} onLogOut={handleLogOut} onSaveClick={handleSaveClick} />
       <main>
         {/* Left column: the form cards. onSubmit is what catches the button click */}
         <form className="col" onSubmit={handleSubmit} noValidate>
@@ -256,6 +276,11 @@ function App() {
           onClose runs however it closes (Esc, Close, or after logging in), so App always
           knows it's shut and "Log in" can open it again. */}
       <AuthDialog isOpen={authOpen} onClose={() => setAuthOpen(false)} onSignedIn={handleSignedIn} />
+      {/* The "Your mixes" pop-up. Unlike the log-in one, it's only on the page while it's
+          open (&& draws it only when mixesOpen is true), so each opening builds a fresh one
+          with clean state. Closing it (Esc, Close, or after Load) sets mixesOpen to false,
+          which takes it off the page again. */}
+      {mixesOpen && <MixesDialog token={localStorage.getItem(TOKEN_KEY)} shares={shares} onLoad={handleLoadMix} onClose={() => setMixesOpen(false)} />}
     </>
   );
 }
