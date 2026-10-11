@@ -260,6 +260,16 @@ function App() {
 
         {/* Right column: the result cards */}
         <div className="col">
+          {/* The results below are fixed example numbers (fixtures/sample-results), not
+              worked out from the person's mix. Fake numbers must never look real, so this
+              says so right above them, whenever they're on screen. It gets deleted in the
+              engine ticket, when the real numbers arrive. */}
+          {results && (
+            <p className="sample-notice">
+              <strong>Sample results.</strong> These are fixed example numbers, not your mix. The live engine is still being built.
+            </p>
+          )}
+          {/* Both cards get the results (null until the first successful run) */}
           <MixVsBenchmark results={results} />
           <EachFundOnItsOwn results={results} />
         </div>
