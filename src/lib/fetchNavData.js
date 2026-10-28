@@ -6,7 +6,7 @@ export async function fetchFundData(schemeCode) {
         // "await" pauses HERE until the API responds — like waiting for a reply
         // before reading the next line, instead of moving on immediately.
         // Template literal builds the URL with the scheme code plugged in.
-        const response = await fetch(`https://api.mfapi.in/mf/${schemeCode}`);
+        const response = await fetch(`/api/nav/${schemeCode}`);
 
         // fetch() only throws an error for things like "no internet" — a bad
         // response (404, 500, etc.) still counts as "success" to fetch itself.

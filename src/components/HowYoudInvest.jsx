@@ -96,11 +96,14 @@ export default function HowYoudInvest({ plan, onPlanChange, range, status, error
                         {/* On a dropdown, the chosen value goes on the <select> itself,
                             not on the individual options. The options come from REBALANCING_OPTIONS. */}
                         <select id="rebalancing" name="rebalancing" value={plan.rebalancing}
+                            aria-invalid={Boolean(errors.rebalancing)}
+                            aria-describedby={errors.rebalancing ? "rebalancing-error" : undefined}
                             onChange={event => onPlanChange("rebalancing", event.target.value)}>
                             {REBALANCING_OPTIONS.map(option => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
                             ))}
                         </select>
+                        {errors.rebalancing && <p className="field-error" id="rebalancing-error">{errors.rebalancing}</p>}
                     </div>
                 </div>
 

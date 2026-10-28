@@ -38,6 +38,10 @@ export function validateInputs({ shares, plan, range }) {
             : "Enter the amount you'd invest — it must be above 0.";
     }
 
+    // ---- rebalancing: only "Let it drift" is built so far ----
+    if (plan.rebalancing === "rebalance_yearly") {
+        errors.rebalancing = "Yearly rebalancing is coming soon — choose “Let it drift” for now.";
+    }
     // One year after From ("" while From is empty). Both From and To use it below.
     const fromPlusYear = plan.from ? oneYearAfter(plan.from) : "";
 

@@ -16,7 +16,7 @@ import { fetchAllFundsData } from "./lib/fetchAllFunds";
 import { computeDateRange } from "./lib/computeDateRange";
 import { validateInputs } from "./lib/validateInputs";
 import { getMe } from "./lib/authApi";
-import { sampleResults } from "../fixtures/sample-results";
+import { runBacktest } from "./lib/runBacktest";
 import "./App.css";
 
 // App is the top of the page. Every card is its own component in
@@ -92,6 +92,11 @@ function App() {
   // { start: "2019-09-11", end: "2026-08-19" }. It's null (nothing yet)
   // until the data arrives, and the cards use it to limit the date boxes.
   const [range, setRange] = useState(null);
+
+
+  // The downloaded price lists, { fundsData, benchmarkData }, kept so "Run the numbers"
+  // can replay the plan on them. null until they arrive.
+  const [priceData, setPriceData] = useState(null);
 
   // Whether the error messages are allowed to show yet. It starts false so a
   // fresh page isn't covered in red, and becomes true the first time someone
@@ -213,6 +218,7 @@ function App() {
         const dateRange = computeDateRange(result.fundsData, result.benchmarkData);
 
         setRange(dateRange);
+        setPriceData(result);
         setPlan(current => ({ ...current, from: dateRange.start, to: dateRange.end }));
         setStatus("ready");
       } catch (error) {
@@ -239,9 +245,9 @@ function App() {
     // If anything is wrong, stop here. The messages are already on screen.
     // Object.keys(errors) lists the broken fields, and an empty list means all is fine.
     if (Object.keys(errors).length > 0) return;
-    // Everything is fine, so save the made-up results. React sees the change
-    // and re-draws the page, handing the new results to the cards.
-    setResults(sampleResults);
+    // Everything is fine, so replay the plan on the real prices. React sees the new
+    // results and re-draws the page, handing them to the cards.
+    setResults(runBacktest({ ...priceData, shares, plan }));
   }
 
   return (
@@ -260,15 +266,6 @@ function App() {
 
         {/* Right column: the result cards */}
         <div className="col">
-          {/* The results below are fixed example numbers (fixtures/sample-results), not
-              worked out from the person's mix. Fake numbers must never look real, so this
-              says so right above them, whenever they're on screen. It gets deleted in the
-              engine ticket, when the real numbers arrive. */}
-          {results && (
-            <p className="sample-notice">
-              <strong>Sample results.</strong> These are fixed example numbers, not your mix. The live engine is still being built.
-            </p>
-          )}
           {/* Both cards get the results (null until the first successful run) */}
           <MixVsBenchmark results={results} />
           <EachFundOnItsOwn results={results} />
