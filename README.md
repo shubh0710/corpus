@@ -20,7 +20,7 @@
 
 ## How it works
 
-1. **Prices.** The page downloads each fund's full daily NAV (net asset value) history from [mfapi.in](https://www.mfapi.in/), a free API built on AMFI data.
+1. **Prices.** Our server downloads each fund's full daily NAV (net asset value) history from [mfapi.in](https://www.mfapi.in/), a free API built on AMFI data, and the page gets it from the server. Vercel keeps each answer for six hours, so repeat visits load faster.
 2. **Dates.** It finds the window that every fund and the benchmark share (from September 2019, when the youngest of them, the Nifty 500 index fund, begins, to the latest available NAV) and limits the date pickers to it.
 3. **Replay.** For a SIP it buys units on each monthly date you would have invested; for a lump sum it buys once. It then values the units every day after.
 4. **Measure.** The same steps run for the benchmark, and the metrics above are worked out for the mix, the benchmark and each fund.
@@ -66,7 +66,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173. The fund data and the form work without the server.
+Open http://localhost:5173. The fund prices come through the server, so start it too (step 2).
 
 ### 2. Server (accounts and saved mixes)
 
@@ -135,6 +135,7 @@ All mix routes need an `Authorization: Bearer <token>` header and only ever touc
 | Method | Path | Purpose | Success |
 |---|---|---|---|
 | GET | `/api/health` | Is the server up? | 200 |
+| GET | `/api/nav/:schemeCode` | A fund's full price history, fetched from mfapi.in | 200 |
 | POST | `/api/auth/register` | Create an account `{ email, password }` | 201 `{ token, user }` |
 | POST | `/api/auth/login` | Log in `{ email, password }` | 200 `{ token, user }` |
 | GET | `/api/auth/me` | Who does this token belong to? | 200 `{ user }` |
@@ -162,7 +163,7 @@ node --env-file=.env mixes-api-check.mjs
 node --env-file=.env auth-api-check.mjs
 ```
 
-Most print a `PASS` or `FAIL` line per case and a final `ALL PASS`. The checks for the page's API helpers (`authApi`, `mixesApi`) swap `fetch` for a stand-in, so they run offline. The data-fetching checks (`fetchNavData`, `fetchAllFunds`, `live-pipeline`) call mfapi.in for real and need an internet connection.
+Most print a `PASS` or `FAIL` line per case and a final `ALL PASS`. The checks for the page's API helpers and price fetching (`authApi`, `mixesApi`, `fetchNavData`, `fetchAllFunds`) swap `fetch` for a stand-in, so they run offline. So does the server's `nav-api-check.mjs`.
 
 ## Disclaimer
 

@@ -1,6 +1,7 @@
 import express from "express";
 import { mixesRouter } from "./routes/mixes.js";
 import { authRouter } from "./routes/auth.js";
+import { navRouter } from "./routes/nav.js";
 
 // The server application. This file only builds it and says which doors it has;
 // it does not open it. index.js opens it for real (on port 3000), and the check
@@ -26,3 +27,7 @@ app.use("/api/mixes", mixesRouter);
 
 // The sign-up and log-in doors, under /api/auth (see routes/auth.js)
 app.use("/api/auth", authRouter);
+
+
+// A fund's price history, fetched from mfapi.in for the page, under /api/nav (see routes/nav.js)
+app.use("/api/nav", navRouter);

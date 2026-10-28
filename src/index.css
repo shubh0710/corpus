@@ -261,7 +261,8 @@ select:hover {
    strong, so when more than one applies the one written last wins.
    Written after :hover, red beats the grey hover colour. Written before
    :focus, brass beats red while the person is typing in the box. */
-input[aria-invalid="true"] {
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
   border-color: var(--color-negative);
 }
 

@@ -32,6 +32,7 @@ const FROM_EARLY = "History only starts on 11 Sep 2019 — pick a From date on o
 const FROM_LATE = "From must leave at least a year before the data ends on 19 Aug 2026 — pick an earlier From date.";
 const TO_EMPTY = "Pick a To date.";
 const TO_LATE = "History only goes up to 19 Aug 2026 — pick a To date on or before that.";
+const YEARLY = "Yearly rebalancing is coming soon — choose “Let it drift” for now.";
 
 const cases = [
     // ---------- everything fine -> {} ----------
@@ -143,6 +144,9 @@ const cases = [
     ["From too early and To too late",
         makeInput({ plan: { from: "2019-01-01", to: "2027-01-01" } }),
         { from: FROM_EARLY, to: TO_LATE }],
+    ["yearly rebalancing isn't built yet",
+        makeInput({ plan: { rebalancing: "rebalance_yearly" } }),
+        { rebalancing: YEARLY }],
     ["all four broken at once",
         makeInput({ shares: { 118778: 15 }, plan: { sipAmount: "", from: "", to: "" } }),
         { shares: "Shares add up to 90% — they need to total 100%.", amount: SIP_AMOUNT, from: FROM_EMPTY, to: TO_EMPTY }]
