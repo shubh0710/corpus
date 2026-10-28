@@ -31,6 +31,7 @@ export function computeFundMetrics(navHistory) {
     // --- Max drawdown: worst drop from any all-time-high to a later low ---
     let peak = first.price;     // highest price seen so far, updated as we go
     let worstDrawdown = 0;      // most negative drawdown found so far
+    let troughDate = first.date; // the day of that deepest drop (the bottom of the worst fall)
     for (const row of navHistory) {
         if (row.price > peak) {
             peak = row.price; // new all-time high — update the reference point
@@ -38,6 +39,7 @@ export function computeFundMetrics(navHistory) {
         const dd = (row.price - peak) / peak; // how far below the peak are we today (always ≤ 0)
         if (dd < worstDrawdown) {
             worstDrawdown = dd; // track the deepest drop found so far
+            troughDate = row.date;
         }
     }
     const maxDrawdown = -worstDrawdown; // flip to a positive number for display
@@ -47,5 +49,5 @@ export function computeFundMetrics(navHistory) {
     const lastPrice = last.price;
     const cagr = ((lastPrice / firstPrice) ** (1 / years)) - 1;
 
-    return { risk, maxDrawdown, cagr };
+    return { risk, maxDrawdown, cagr, troughDate };
 }
